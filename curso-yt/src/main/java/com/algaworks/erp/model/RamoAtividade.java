@@ -5,6 +5,11 @@ import java.util.Objects;
 
 import javax.persistence.GenerationType;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+
 @Entity
 @Table(name="ramo_atividade")
 public class RamoAtividade implements Serializable {
