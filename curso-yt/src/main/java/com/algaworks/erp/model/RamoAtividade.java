@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.GenerationType;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -15,12 +15,13 @@ import javax.persistence.GeneratedValue;
 public class RamoAtividade implements Serializable {
 	
 	//unique version identifier for Serializable classes
-	private static final long serialVersionUID=lL;
+	private static final long serialVersionUID=1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) //pq nao ; ??
 	private Long id;
 	
+	@Column(nullable=false, length=80)
 	private String descricao;
 
 	
