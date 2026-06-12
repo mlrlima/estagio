@@ -90,6 +90,9 @@ public class Empresa implements Serializable {
 	public void setRamoAtividade(RamoAtividade ramoAtividade) {
 		this.ramoAtividade = ramoAtividade;
 	}
+	
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
