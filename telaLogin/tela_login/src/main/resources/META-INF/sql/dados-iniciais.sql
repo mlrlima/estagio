@@ -1,0 +1,1 @@
+insert into usuario(id, email, nome) values(1, "email1.email.com", "nome teste");

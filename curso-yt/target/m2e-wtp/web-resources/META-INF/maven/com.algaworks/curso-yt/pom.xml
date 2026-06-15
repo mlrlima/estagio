@@ -15,12 +15,21 @@
   </properties>
   
   <dependencies>
+  
+  	<dependency>
+  	<!-- para o cdi -->
+  		<groupId>org.jboss.weld.servlet</groupId>
+  		<artifactId>weld.servlet</artifactId>
+  		<version>2.2.13</version>
+  		<scope>compile</scope>
+  	</dependency>
+  
   	<dependency>
   	<!-- reference implementation of the JSF --> 
   	<!-- used to build component-based user interfaces -->
   		<groupId>org.glassfish</groupId>
   		<artifactId>javax.faces</artifactId>
-  		<version>2.2.13</version>
+  		<version>2.4.0.Final</version>
   		<scope>compile</scope>
   	</dependency>
   	

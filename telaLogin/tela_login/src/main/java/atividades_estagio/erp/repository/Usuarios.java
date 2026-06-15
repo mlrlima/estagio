@@ -24,6 +24,7 @@ public class Usuarios implements Serializable {
 		return manager.find(Usuario.class, id);
 	}
 
+	//pesquisar usuario por nome
 	public List<Usuario> pesquisar(String nome) {
 		String jpql = "from Usuario where nome like :nome";
 		

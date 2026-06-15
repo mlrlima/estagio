@@ -23,6 +23,8 @@ public class User implements Serializable{
 	
 	@Column(nullable=false, length=100)
 	private String nome;
+	
+	private String role;
 
 	
 	

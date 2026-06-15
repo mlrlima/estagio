@@ -1,7 +1,7 @@
 package com.algaworks.erp.model;
 
 
-//enum: criação de estruturas de dados organizados
+//enum: conjunto de valores constantes pré-definidos
 public enum TipoEmpresa {
 	
 	MEI("Microempreendedor Individual"), 

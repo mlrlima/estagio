@@ -4,15 +4,20 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="usuario")
 public class Usuario implements Serializable{
+	//transforma a informacao em streams de bytes
 	private static final long serialVersionUID=1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY) //ordenado crescente
 	private Long id;
 	
 	@Column(nullable=false, length=50)
@@ -58,10 +63,13 @@ public class Usuario implements Serializable{
 	}
 	
 	
-	@Override
+	@Override //pra substituir por essa funcao a q ja existe
 	public String toString() {
 		return "Usuario [id=" + id + "]";
 	}
+	
+	
+	//hash hash hash hash
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

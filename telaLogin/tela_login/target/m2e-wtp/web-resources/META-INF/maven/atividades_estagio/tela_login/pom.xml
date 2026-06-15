@@ -6,7 +6,6 @@
   <packaging>war</packaging>
   <name>tela_login</name>
   
-  
   <properties>
   <!-- tipo de encodificacao dos caracteres dos arquivos --> 
   <!-- "global standard character encoding" -->

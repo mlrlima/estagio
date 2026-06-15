@@ -19,12 +19,15 @@ import javax.persistence.Column;
 
 @Entity
 @Table(name="empresa")
+
+//Serialization is the conversion of the state of an object into a byte stream;
+//which we can then save to a database or transfer over a network.
 public class Empresa implements Serializable {
 	//unique version identifier for Serializable classes
 	private static final long serialVersionUID=1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY) //crescente
 	private Long id;
 	
 	@Column(name="nome_fantasia", nullable=false, length=80)
@@ -41,13 +44,20 @@ public class Empresa implements Serializable {
 	private Date dataFundacao;
 	
 	@ManyToOne
-	@JoinColumn(name="ramo_atividade_id", nullable=false)
+	@JoinColumn(name="ramo_atividade_id", nullable=true)
 	private RamoAtividade ramoAtividade;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false, length=30)
 	private TipoEmpresa tipo;
 	
+	public TipoEmpresa getTipo() {
+		return tipo;
+	}
+	public void setTipo(TipoEmpresa tipo) {
+		this.tipo=tipo;
+	}
+
 
 	public Long getId() {
 		return id;
