@@ -1,1 +1,1 @@
-insert into usuario(id, email, nome) values(1, "email1.email.com", "nome teste");
+insert into usuario(id, email, nome, senha) values(1, "email1.email.com", "nome teste", "senha");
