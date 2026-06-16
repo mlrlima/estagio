@@ -33,11 +33,13 @@ public class Usuarios implements Serializable {
 		return query.getResultList();
 	}
 
+	//create && update
 	public Usuario guardar(Usuario usuario) {
 		//atualizar - update ou insert
 		return manager.merge(usuario);
 	}
 
+	//delete
 	public void remover(Usuario usuario) {
 		usuario = porId(usuario.getId());
 		manager.remove(usuario);

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,11 +30,21 @@ public class Usuario implements Serializable{
 	
 	@Column(nullable=false, length=100)
 	private String nome;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable=false)
+	private Role role;
 
 	
 	
 	
 	//getters e setters e outros utils
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role=role;
+	}
 	
 	public Long getId() {
 		return id;

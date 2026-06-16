@@ -33,11 +33,13 @@ public class Pets implements Serializable {
 		return query.getResultList();
 	}
 
+	//create && update
 	public Pet guardar(Pet pet) {
 		//atualizar - update ou insert
 		return manager.merge(pet);
 	}
 
+	//delete
 	public void remover(Pet pet) {
 		pet = porId(pet.getId());
 		manager.remove(pet);
