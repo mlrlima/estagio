@@ -17,7 +17,7 @@ public class Usuario implements Serializable{
 	private static final long serialVersionUID=1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY) //ordenado crescente
+	@GeneratedValue(strategy=GenerationType.IDENTITY) //gera um valor auto-incremental
 	private Long id;
 	
 	@Column(nullable=false, length=50)
@@ -69,7 +69,6 @@ public class Usuario implements Serializable{
 	}
 	
 	
-	//hash hash hash hash
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

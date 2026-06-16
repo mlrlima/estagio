@@ -26,7 +26,7 @@ public class Empresa implements Serializable {
 	//unique version identifier for Serializable classes
 	private static final long serialVersionUID=1L;
 	
-	@Id
+	@Id //PK
 	@GeneratedValue(strategy=GenerationType.IDENTITY) //crescente
 	private Long id;
 	
@@ -43,7 +43,7 @@ public class Empresa implements Serializable {
 	@Column(name="data_fundacao")
 	private Date dataFundacao;
 	
-	@ManyToOne
+	@ManyToOne //empresa <n---1> ramoAtividade
 	@JoinColumn(name="ramo_atividade_id", nullable=true)
 	private RamoAtividade ramoAtividade;
 	
@@ -51,13 +51,16 @@ public class Empresa implements Serializable {
 	@Column(nullable=false, length=30)
 	private TipoEmpresa tipo;
 	
+	
+	
+	//getters e setters e outros
+	
 	public TipoEmpresa getTipo() {
 		return tipo;
 	}
 	public void setTipo(TipoEmpresa tipo) {
 		this.tipo=tipo;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -106,7 +109,10 @@ public class Empresa implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+		
 	}
+	
+	//The default implementation of equals() compares the identity of the object
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
