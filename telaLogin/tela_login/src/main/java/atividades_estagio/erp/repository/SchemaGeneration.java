@@ -15,7 +15,7 @@ public class SchemaGeneration {
 
         EntityManager em = emf.createEntityManager();
 
-        List<Usuario> lista = em.createQuery("from Empresa", Usuario.class).getResultList();
+        List<Usuario> lista = em.createQuery("from Usuario", Usuario.class).getResultList();
 
         System.out.println(lista);
 
