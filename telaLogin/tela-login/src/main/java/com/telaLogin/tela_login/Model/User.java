@@ -4,15 +4,22 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class User implements Serializable{
+@Entity
+@Table(name="usuario")
+public class Usuario implements Serializable{
+	//transforma a informacao em streams de bytes
 	private static final long serialVersionUID=1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY) //gera um valor auto-incremental
 	private Long id;
 	
 	@Column(nullable=false, length=50)
@@ -24,12 +31,20 @@ public class User implements Serializable{
 	@Column(nullable=false, length=100)
 	private String nome;
 	
-	private String role;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable=false)
+	private Role role;
 
 	
 	
 	
 	//getters e setters e outros utils
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role=role;
+	}
 	
 	public Long getId() {
 		return id;
@@ -60,10 +75,12 @@ public class User implements Serializable{
 	}
 	
 	
-	@Override
+	@Override //pra substituir por essa funcao a q ja existe
 	public String toString() {
 		return "Usuario [id=" + id + "]";
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -76,7 +93,7 @@ public class User implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Usuario other = (Usuario) obj;
 		return Objects.equals(id, other.id);
 	}
 }
