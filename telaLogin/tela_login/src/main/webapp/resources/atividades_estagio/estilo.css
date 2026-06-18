@@ -1,0 +1,89 @@
+/* Fundo geral */
+body {
+    background-color: #FFF9C4; /* amarelo pastel */
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #D3D3D3;
+    color: #000000;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 20px;
+    border-bottom: 2px solid #B0B0B0;
+}
+
+/* Conteúdo principal */
+#conteudo {
+    width: 500px;
+    margin: 30px auto;
+    background-color: #F5F5F5;
+    border: 1px solid #C0C0C0;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+/* Tabela gerada pelo panelGrid */
+table {
+    width: 100%;
+}
+
+/* Labels */
+label {
+    font-weight: bold;
+}
+
+/* Campos */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #B5B5B5;
+    border-radius: 4px;
+    background-color: #E0E0E0;
+    color: #000000;
+    box-sizing: border-box;
+}
+
+/* Botão */
+input[type="submit"],
+button {
+    background-color: #CFCFCF;
+    color: #000000;
+    border: 1px solid #AFAFAF;
+    border-radius: 4px;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 120px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #BDBDBD;
+}
+
+/* Rodapé */
+footer {
+    margin-top: 40px;
+    background-color: #D3D3D3;
+    text-align: center;
+    padding: 15px;
+    border-top: 2px solid #B0B0B0;
+}
+
+/* Links */
+a {
+    color: #000000;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: none;
+}
