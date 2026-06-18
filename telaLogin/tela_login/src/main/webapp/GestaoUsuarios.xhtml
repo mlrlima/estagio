@@ -24,23 +24,22 @@
 			<h:form>
 				<h:panelGrid columns="2">
 					<h:outputLabel value="Nome: " for="nome" />
-					<h:inputText id="nome" />
+					<h:inputText id="nome" value="#{gestaoUsuariosBean.usuario.nome}" />
 					
 					<h:outputLabel value="Email: " for="email" />
-					<h:inputText id="email" />
+					<h:inputText id="email" value="#{gestaoUsuariosBean.usuario.email}" />
 					
 					<h:outputLabel value="Senha: " for="senha" />
-					<h:inputText id="senha" />
+					<h:inputText id="senha" value="#{gestaoUsuariosBean.usuario.senha}" />
 					
 					<h:outputLabel value="Role: " for="role" />
-					<h:selectOneMenu id="role">
+					<h:selectOneMenu id="role" value="#{gestaoUsuariosBean.usuario.role}">
 						<f:selectItem itemLabel="Selecione:" />
-						<f:selectItem itemLabel="ADMIN" itemValue="ADMIN" />
-						<f:selectItem itemLabel="USER" itemValue="USER" />
+						<f:selectItems value="#{gestaoUsuariosBean.roles}"/>
 					</h:selectOneMenu>
 					
 					<h:outputLabel/>
-					<h:commandButton value="Salvar"/>
+					<h:commandButton value="Salvar" actionListener="#{gestaoUsuariosBean.salvar}"/>
 				
 				</h:panelGrid>
 				
