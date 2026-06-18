@@ -20,10 +20,10 @@ public class GestaoUsuariosBean implements Serializable {
 	
 	
 	public void salvar() {
-		System.out.println("Nome: "+usuario.getNome());
-		System.out.println("Email: "+usuario.getEmail());
-		System.out.println("Senha: "+usuario.getSenha());
-		System.out.println("Role: "+usuario.getRole());
+		System.out.println("Nome: "+ usuario.getNome());
+		System.out.println("Email: "+ usuario.getEmail());
+		System.out.println("Senha: "+ usuario.getSenha());
+		System.out.println("Role: "+ usuario.getRole());
 	}
 	
 	public Usuario getUsuario(){
@@ -33,4 +33,4 @@ public class GestaoUsuariosBean implements Serializable {
 	public Role[] getRoles() {
 		return Role.values();
 	}
-}
+} 

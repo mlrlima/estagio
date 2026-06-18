@@ -37,7 +37,7 @@ public class Pet implements Serializable {
 	@Column(nullable=false)
 	private Especie especie;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE )
 	@Column(name="data_nascimento", nullable=true)
 	private Date dataNascimento;
 
@@ -64,7 +64,13 @@ public class Pet implements Serializable {
 	public void setDono(Usuario dono) {
 		this.dono = dono;
 	}
-
+	
+	/*
+	public String getNomeDono(){
+		return dono.getNome();
+	}
+	*/
+	
 	public Especie getEspecie() {
 		return especie;
 	}

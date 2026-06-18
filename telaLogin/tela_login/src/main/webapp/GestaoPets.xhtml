@@ -8,7 +8,7 @@
 	<h:head>
 	
 		<meta charset="UTF-8"/>
-		<title>Gestão dos Usuarios</title>
+		<title>Gestão dos Pets</title>
 		 
 		<h:outputStylesheet library="atividades_estagio" name="estilo.css" />
 	 	
@@ -16,34 +16,33 @@
 
 	<h:body>
 	
-		<header>Gestão dos Usuários</header>
+		<header>Gestão dos Pets</header>
 		
 		
 		<div id="conteudo">
 		
 			<h:form>
-				<h:commandLink value="Gestao dos Pets" action="GestaoPets?faces-redirect=true"/>
+				<h:commandLink value="Gestao dos Usuarios" action="GestaoUsuarios?faces-redirect=true"/>
 			</h:form>
 		
 			<h:form>
 				<h:panelGrid columns="2">
 					<h:outputLabel value="Nome: " for="nome" />
-					<h:inputText id="nome" value="#{gestaoUsuariosBean.usuario.nome}" />
-					
-					<h:outputLabel value="Email: " for="email" />
-					<h:inputText id="email" value="#{gestaoUsuariosBean.usuario.email}" />
-					
-					<h:outputLabel value="Senha: " for="senha" />
-					<h:inputText id="senha" value="#{gestaoUsuariosBean.usuario.senha}" />
-					
-					<h:outputLabel value="Role: " for="role" />
-					<h:selectOneMenu id="role" value="#{gestaoUsuariosBean.usuario.role}">
+					<h:inputText id="nome" value="#{gestaoPetsBean.pet.nome}" />
+			
+					<h:outputLabel value="Especie: " for="especie" />
+					<h:selectOneMenu id="especie" value="#{gestaoPetsBean.pet.especie}">
 						<f:selectItem itemLabel="Selecione:" />
-						<f:selectItems value="#{gestaoUsuariosBean.roles}"/>
+						<f:selectItems value="#{gestaoPetsBean.especies}"/>
 					</h:selectOneMenu>
 					
+					<h:outputLabel value="Data nascimento: " for="dataNascimento" />
+					<h:inputText id="dataNascimento" value="#{gestaoPetsBean.pet.dataNascimento}">
+						<f:convertDateTime pattern="dd/mm/yyyy" />
+					</h:inputText>
+					
 					<h:outputLabel/>
-					<h:commandButton value="Salvar" actionListener="#{gestaoUsuariosBean.salvar}"/>
+					<h:commandButton value="Salvar" actionListener="#{gestaoPetsBean.salvar}"/>
 				
 				</h:panelGrid>
 				
