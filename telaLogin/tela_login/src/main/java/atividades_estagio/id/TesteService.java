@@ -1,7 +1,10 @@
 package atividades_estagio.id;
 
+import javax.inject.Inject;
+
 public class TesteService {
 
+	@Inject
 	private Teste teste;
 	
 	public TesteService() {}

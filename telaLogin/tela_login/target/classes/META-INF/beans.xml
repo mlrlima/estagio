@@ -1,1 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+       http://xmlns.jcp.org/xml/ns/javaee/beans_2_0.xsd"
+       bean-discovery-mode="all">
+</beans>
+
+
+<!-- bean archive descriptor
+Its presence signals the container to auto-scan for CDI markers (@Named, @Inject)
+and enables global configuration like alternatives or interceptors.
+ -->
+ 
 <!-- https://github.com/cdi-spec/cdi-spec.org/blob/master/_faq/intro/4-what-is-beans-xml-and-why-do-i-need-it.asciidoc -->
