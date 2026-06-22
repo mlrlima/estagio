@@ -3,12 +3,14 @@ package atividades_estagio.erp.repository;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import atividades_estagio.erp.model.Usuario;
 
+@ApplicationScoped
 public class Usuarios implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -32,6 +34,12 @@ public class Usuarios implements Serializable {
 		
 		TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
 		query.setParameter("nome", nome + "%");
+		return query.getResultList();
+	}
+	
+	//retorna lista com todos os usuarios
+	public List<Usuario> todos() {
+		TypedQuery<Usuario> query = manager.createQuery("from Usuario", Usuario.class);
 		return query.getResultList();
 	}
 

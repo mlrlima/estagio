@@ -17,6 +17,7 @@ public class EntityManagerProducer {
 	private EntityManagerFactory factory;
 	
 	public EntityManagerProducer(){
+		System.out.println("EntityManagerProducer created!");
 		this.factory=Persistence.createEntityManagerFactory("AtividadesEstagioPU");
 	}
 	

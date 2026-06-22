@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:p="http://primefaces.org/ui">
+ 	
+ 	<!-- :h == tag do jsf -->
+ 	
+	<h:head>
+	
+		<meta charset="UTF-8"/>
+		<title>Gestão dos Usuarios</title>
+		 
+		<h:outputStylesheet library="atividades_estagio" name="estilo.css" />
+	 	
+	 	
+	 	<f:metadata>
+	 		<f:viewAction action="{gestaoUsuariosBean.todosUsuarios}" />
+	 	</f:metadata>
+	 	
+	 	
+	 	
+	</h:head>
+
+	<h:body>
+	
+		<h2>Gestão dos Usuários</h2>
+		
+		
+		<div id="conteudo">
+		
+			<p:dataTable value="#{gestaoUsuariosBean.listaUsuarios}"
+				var="usuario" emptyMessage="Nenhuma informação encontrada.">
+				<p:column headerText="Nome">
+					<h:outputText value="#{usuario.nome}" />
+				</p:column>
+				
+				<p:column headerText="Email">
+					<h:outputText value="#{usuario.email}" />
+				</p:column>
+				
+				<p:column headerText="Senha">
+					<h:outputText value="#{usuario.senha}" />
+				</p:column>
+				
+				<p:column headerText="Role">
+					<h:outputText value="#{usuario.role}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+		</div>
+		
+		<footer>
+			Referência: <a href="URL">https://www.youtube.com/watch?v=ezwgBvsd6Ps</a>
+		</footer>
+	</h:body>
+
+</html>
