@@ -22,7 +22,13 @@ public class GestaoUsuariosBean implements Serializable {
 	@Inject
 	private Usuarios usuarios;
 	
+	private String termoPesquisa;
+	
 	private List<Usuario> listaUsuarios;
+	
+	public void pesquisar(){
+		listaUsuarios=usuarios.pesquisar(termoPesquisa);
+	}
 	
 	public void todosUsuarios() {
 		listaUsuarios=usuarios.todos();
@@ -30,6 +36,18 @@ public class GestaoUsuariosBean implements Serializable {
 	
 	public List<Usuario> getListaUsuarios(){
 		return listaUsuarios;
+	}
+	
+	
+	public String getTermoPesquisa(){
+		return termoPesquisa;
+	}
+	public void setTermoPesquisa(String termoPesquisa) {
+		this.termoPesquisa=termoPesquisa;
+	}
+	
+	public Role[] getRoles() {
+		return Role.values();
 	}
 	
 } 

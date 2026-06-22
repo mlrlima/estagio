@@ -40,7 +40,7 @@
   	<!-- UI component framework for JSF -->
   		<groupId>org.primefaces</groupId>
   		<artifactId>primefaces</artifactId>
-  		<version>6.0</version>
+  		<version>15.0.0</version>
   		<scope>compile</scope>
   	</dependency>
   	
