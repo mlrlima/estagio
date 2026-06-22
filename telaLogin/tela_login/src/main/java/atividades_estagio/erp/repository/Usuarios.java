@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 
 import atividades_estagio.erp.model.Usuario;
 
-@ApplicationScoped
+//@ApplicationScoped
 public class Usuarios implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

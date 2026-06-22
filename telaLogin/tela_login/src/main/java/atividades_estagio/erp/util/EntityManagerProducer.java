@@ -17,8 +17,16 @@ public class EntityManagerProducer {
 	private EntityManagerFactory factory;
 	
 	public EntityManagerProducer(){
-		System.out.println("EntityManagerProducer created!");
-		this.factory=Persistence.createEntityManagerFactory("AtividadesEstagioPU");
+		System.out.println("Creating EMF...");
+
+	    try {
+	        this.factory =
+	            Persistence.createEntityManagerFactory("AtividadesEstagioPU");
+
+	        System.out.println("EMF created successfully");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 	@Produces //para ajudar o cdi a criar
