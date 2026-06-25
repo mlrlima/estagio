@@ -8,6 +8,9 @@
 		<locale-config>
 			<default-locale>pt_BR</default-locale>
 		</locale-config>
+		
+		<!-- specifies the base name of a .properties -->
+		<message-bundle>atividades_estagio.erp.Messages</message-bundle>
 	</application>
 
 </faces-config>

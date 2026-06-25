@@ -11,6 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="usuario")
@@ -22,15 +27,21 @@ public class Usuario implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY) //gera um valor auto-incremental
 	private Long id;
 	
+	@NotNull
+	@Email
 	@Column(nullable=false, length=50)
 	private String email;
 	
+	@NotNull
+	@Size(min=4, message="A senha deve ter no minimo 4 caracteres")
 	@Column(nullable=false, length=50)
 	private String senha;
 	
+	@NotEmpty //not null && min 1 caractere
 	@Column(nullable=false, length=100)
 	private String nome;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=true)
 	private Role role;

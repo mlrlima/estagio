@@ -1,16 +1,20 @@
 package atividades_estagio.erp.controller;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
+
 import atividades_estagio.erp.model.Role;
 import atividades_estagio.erp.model.Usuario;
 import atividades_estagio.erp.repository.Usuarios;
 import atividades_estagio.erp.service.CadastroUsuarioService;
+import atividades_estagio.erp.util.FacesMessages;
 
 @Named
 //@RequestScoped //a cada requisicao cria um novo
@@ -24,6 +28,9 @@ public class GestaoUsuariosBean implements Serializable {
 	private Usuarios usuarios;
 	
 	private Usuario usuario;
+	
+    @Inject
+    private FacesMessages messages;
 	
 	@Inject
 	private CadastroUsuarioService cadastroUsuarioService;
@@ -42,9 +49,14 @@ public class GestaoUsuariosBean implements Serializable {
 		
 		if(jaHouvePesquisa()) {
 			pesquisar();
+		}else{
+			todosUsuarios();
 		}
 		
-		//messages.info("Usuario cadastrado com sucesso");
+		messages.info("Usuario salvo com sucesso");
+        
+		PrimeFaces.current().ajax().update(Arrays.asList(
+                "frm:usuariosDataTable", "frm:messages"));
 	}
 	
 	private boolean jaHouvePesquisa(){
@@ -53,6 +65,10 @@ public class GestaoUsuariosBean implements Serializable {
 	
 	public void pesquisar(){
 		listaUsuarios=usuarios.pesquisar(termoPesquisa);
+		
+		if (listaUsuarios.isEmpty()) {
+            messages.info("Não encontrado");
+        }
 	}
 	
 	public void todosUsuarios() {
@@ -77,6 +93,14 @@ public class GestaoUsuariosBean implements Serializable {
 	
 	public Usuario getUsuario() {
 		return usuario;
+	}
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario=usuario;
+	}
+	
+	public boolean isUsuarioSelecionado() {
+		return usuario!=null && usuario.getId()!=null; 
 	}
 	
 } 
