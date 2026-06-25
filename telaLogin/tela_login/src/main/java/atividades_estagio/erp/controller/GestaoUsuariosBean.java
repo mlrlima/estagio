@@ -10,6 +10,7 @@ import javax.inject.Named;
 import atividades_estagio.erp.model.Role;
 import atividades_estagio.erp.model.Usuario;
 import atividades_estagio.erp.repository.Usuarios;
+import atividades_estagio.erp.service.CadastroUsuarioService;
 
 @Named
 //@RequestScoped //a cada requisicao cria um novo
@@ -22,9 +23,33 @@ public class GestaoUsuariosBean implements Serializable {
 	@Inject
 	private Usuarios usuarios;
 	
+	private Usuario usuario;
+	
+	@Inject
+	private CadastroUsuarioService cadastroUsuarioService;
+	
 	private String termoPesquisa;
 	
 	private List<Usuario> listaUsuarios;
+	
+	
+	public void prepararNovoUsuario() {
+		usuario=new Usuario();
+	}
+	
+	public void salvar() {
+		cadastroUsuarioService.salvar(usuario);
+		
+		if(jaHouvePesquisa()) {
+			pesquisar();
+		}
+		
+		//messages.info("Usuario cadastrado com sucesso");
+	}
+	
+	private boolean jaHouvePesquisa(){
+		return termoPesquisa!=null && !"".equals(termoPesquisa);
+	}
 	
 	public void pesquisar(){
 		listaUsuarios=usuarios.pesquisar(termoPesquisa);
@@ -48,6 +73,10 @@ public class GestaoUsuariosBean implements Serializable {
 	
 	public Role[] getRoles() {
 		return Role.values();
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
 	}
 	
 } 

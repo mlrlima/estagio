@@ -22,15 +22,18 @@
 			<p:toolbar>
 				<f:facet name="left">
 			
-					<p:inputText placeholder="Pesquisar"  size="20"
+					<p:inputText id="termoPesquisa" placeholder="Pesquisar"  size="20"
 						value="#{gestaoUsuariosBean.termoPesquisa}"/>
 					<p:commandButton icon="pi pi-search"
-						actionListener="#{gestaoUsuariosBean.pesquisar}" update="usuariosDataTable" />
+						actionListener="#{gestaoUsuariosBean.pesquisar}" update="usuariosDataTable"
+						process="@this termoPesquisa" />
 					
 					<p:separator />
 				
 					<p:commandButton value="Novo" icon="pi pi-user-plus" 
-						onclick="PF('usuarioDialogWidgetVar').show()"/>
+						actionListener="#{gestaoUsuariosBean.prepararNovoUsuario}"
+						oncomplete="PF('usuarioDialogWidgetVar').show()" update="usuarioDialog"
+						process="@this"/> <!-- so vai processar esse botao, nao os outros -->
 					
 					<p:separator />
 					
@@ -68,32 +71,38 @@
 				
 			</p:dataTable>
 			
-			<p:dialog header="Novo usuario" widgetVar="usuarioDialogWidgetVar" modal="true">
+			<!-- novo usuario -->
+			<p:dialog id="usuarioDialog" header="Novo usuario" widgetVar="usuarioDialogWidgetVar" modal="true">
 			
-				<h:panelGrid columns="2">
+				<h:panelGrid id="usuarioPanelGrid" columns="2"
+					rendered="#{gestaoUsuariosBean.usuario ne null}">
+				
 					<p:outputLabel value="Nome: " for="nome" />
 					<h:panelGroup>
-						<p:inputText id="nome" maxlength="100" required="true" />
+						<p:inputText id="nome" maxlength="100" required="true" 
+							value="#{gestaoUsuariosBean.usuario.nome}"/>
 						<!-- mensagem de erro -->
 						<p:message for="nome"/>
 					</h:panelGroup>
 					
 					<p:outputLabel value="Email: " for="email" />
 					<h:panelGroup>
-						<p:inputText id="email" maxlength="50" required="true" />
+						<p:inputText id="email" maxlength="50" required="true"
+							value="#{gestaoUsuariosBean.usuario.email}"/>
 						<!-- mensagem de erro -->
 						<p:message for="email"/>
 					</h:panelGroup>
 					
 					<p:outputLabel value="Senha: " for="senha" />
 					<h:panelGroup>
-						<p:inputText id="senha" maxlength="50" required="true" />
+						<p:inputText id="senha" maxlength="50" required="true"
+							value="#{gestaoUsuariosBean.usuario.senha}" />
 						<!-- mensagem de erro -->
 						<p:message for="senha"/>
 					</h:panelGroup>
 					
 					<p:outputLabel value="Role: " for="role" />
-					<p:selectOneMenu id="role">
+					<p:selectOneMenu id="role" value="#{gestaoUsuariosBean.usuario.role}">
 						<f:selectItem itemLabel="Selecione:" />
 						<f:selectItems value="#{gestaoUsuariosBean.roles}"
 							var="role" itemValue="#{role}"/>
@@ -102,7 +111,9 @@
 					<!-- <p:calendar pattern="dd/MM/yyyy" /> -->
 					
 					<p:outputLabel/>
-					<p:commandButton value="Salvar"/>
+					<p:commandButton value="Salvar" actionListener="#{gestaoUsuariosBean.salvar}"
+						update="usuariosDataTable usuarioPanelGrid"
+						oncomplete="PF('usuarioDialogWidgetVar').hide()" process="usuarioDialog" />
 					
 				</h:panelGrid>
 			
