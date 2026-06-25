@@ -13,10 +13,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@Table(name="pet")
 public class Pet implements Serializable {
 	//It ensures that during deserialization, the object being read matches 
 	//the exact same class version that was originally serialized
@@ -26,13 +31,16 @@ public class Pet implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable=false, length=50)
+	@NotEmpty
+	@Column(nullable=false, length=100)
 	private String nome;
 	
+	@NotNull
 	@ManyToOne //pet <n---1> dono
-	@JoinColumn(name="user_id", nullable=true)
+	@JoinColumn(name="user_id", nullable=false)
 	private Usuario dono;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false)
 	private Especie especie;

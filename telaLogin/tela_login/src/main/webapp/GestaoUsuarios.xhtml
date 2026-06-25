@@ -19,6 +19,7 @@
 		
 		
 		<h:form id="frm">
+		
 			<p:messages id="messages" showDetail="true" />
 		
 			<p:toolbar id="toolbar">
@@ -37,7 +38,8 @@
 				
 					<p:commandButton value="Novo" icon="pi pi-user-plus" 
 									 actionListener="#{gestaoUsuariosBean.prepararNovoUsuario}"
-									 oncomplete="PF('usuarioDialogWidgetVar').show()" update="usuarioDialog"
+									 oncomplete="PF('usuarioDialogWidgetVar').show()"
+									 update="usuarioDialog"
 									 process="@this"> <!-- so vai processar esse botao, nao os outros -->
 						
 						<p:resetInput target="usuarioDialog"/>
@@ -47,13 +49,30 @@
 					
 					<p:commandButton value="Editar"
 									 icon="pi pi-user-edit"
-									 disabled="#{not gestaoUsuariosBean.usuarioSelecionado}" />
+									 disabled="#{not gestaoUsuariosBean.usuarioSelecionado}"
+									 actionListener="#{gestaoUsuariosBean.prepararEdicao}"
+									 oncomplete="PF('usuarioDialogWidgetVar').show()"
+									 update="usuarioDialog"
+									 process="@this" >
+									 
+						<p:resetInput target="usuarioDialog"/>
+					</p:commandButton>
 					
 					<p:separator />
 					
-					<p:commandButton value="Delear"
+					<p:commandButton value="Excluir"
 									 icon="pi pi-user-minus"
-									 disabled="#{not gestaoUsuariosBean.usuarioSelecionado}" />
+									 disabled="#{not gestaoUsuariosBean.usuarioSelecionado}"
+									 actionListener="#{gestaoUsuariosBean.excluir}"
+									 update="messages usuariosDataTable toolbar"
+									 process="@this" >
+					
+						<!-- nao ta funcionando
+						<p:confirm header="Confirmação de exclusão"
+								   icon="pi pi-exclamation-triangle"/>
+									 
+								-->
+					</p:commandButton>
 				
 				 </f:facet>
 			

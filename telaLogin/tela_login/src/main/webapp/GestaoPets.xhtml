@@ -1,79 +1,30 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
  	xmlns:h="http://xmlns.jcp.org/jsf/html"
  	xmlns:f="http://xmlns.jcp.org/jsf/core"
- 	xmlns:p="http://primefaces.org/ui">
+ 	xmlns:p="http://primefaces.org/ui"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+ 	template="WEB-INF/template/Layout.xhtml">
  	
  	<!-- :h == tag do jsf -->
  	
-	<h:head>
-	
-		<meta charset="UTF-8"/>
-		<title>Gestão dos Pets</title>
-		 
-		<h:outputStylesheet library="atividades_estagio" name="estilo.css" />
-	 	
-	</h:head>
+	<ui:define name="titulo">Cadastro dos Usuarios</ui:define>
 
-	<h:body>
+	<ui:define name="conteudo">
 	
-		<header>Gestão dos Pets</header>
+		<f:metadata>
+			<f:viewAction action="#{gestaoPetsBean.todosPets}"/>
+		</f:metadata>
 		
-		
-		<div id="conteudo">
-		
-			<h:form>
-				<p:commandLink value="Gestao dos Usuarios" action="GestaoUsuarios?faces-redirect=true"/>
-			</h:form>
-		
-			<h:form>
-				<h:panelGrid columns="2">
-					<p:outputLabel value="Nome: " for="nome" />
-					<h:panelGroup>
-						<p:inputText id="nome" value="#{gestaoPetsBean.pet.nome}" required="true" />
-						
-						<!-- mensagem de erro -->
-						<p:message for="nome"/>
-					</h:panelGroup>
+		<h:form id="frm">
 			
-					<p:outputLabel value="Especie: " for="especie" />
-					<p:selectOneMenu id="especie" value="#{gestaoPetsBean.pet.especie}">
-						<f:selectItem itemLabel="Selecione:" />
-						<f:selectItems value="#{gestaoPetsBean.especies}"/>
-					</p:selectOneMenu>
-					
-					<p:outputLabel value="Data nascimento: " for="dataNascimento" />
-					<p:inputText id="dataNascimento" value="#{gestaoPetsBean.pet.dataNascimento}">
-						<f:convertDateTime pattern="dd/mm/yyyy" />
-					</p:inputText>
-					
-					<p:outputLabel/>
-					<p:commandButton value="Salvar" actionListener="#{gestaoPetsBean.salvar}"/>
-				
-				</h:panelGrid>
-				
-				<p:dataTable value="#{[0,0,0,0]}">
-					<p:column headerText="Nome">
-						<h:outputText value="Nome"/>
-					</p:column>
-					
-					<p:column headerText="Email">
-						<h:outputText value="Email"/>
-					</p:column>
-					
-					<p:column headerText="Role">
-						<h:outputText value="Role"/>
-					</p:column>
-					
-				</p:dataTable>
-				
-			</h:form>
+			<p:messages id="messages" showDetail="true" />
 			
-		</div>
+			<p:toolbar id="toolbar">
+			</p:toolbar>
 		
-		<footer>
-			Referência: <a href="URL">https://www.youtube.com/watch?v=ezwgBvsd6Ps</a>
-		</footer>
-	</h:body>
+		</h:form>
+	
+	</ui:define>
 
 </html>

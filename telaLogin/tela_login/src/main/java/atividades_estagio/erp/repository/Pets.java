@@ -26,12 +26,18 @@ public class Pets implements Serializable {
 		return manager.find(Pet.class, id);
 	}
 
-	//pesquisar usuario por nome
+	//pesquisar por nome
 	public List<Pet> pesquisar(String nome) {
 		String jpql = "from Pet where nome like :nome";
 		
 		TypedQuery<Pet> query = manager.createQuery(jpql, Pet.class);
 		query.setParameter("nome", nome + "%");
+		return query.getResultList();
+	}
+	
+	//retorna lista com todos os pets
+	public List<Pet> todos(){
+		TypedQuery<Pet> query=manager.createQuery("from Pet", Pet.class);
 		return query.getResultList();
 	}
 

@@ -44,20 +44,38 @@ public class GestaoUsuariosBean implements Serializable {
 		usuario=new Usuario();
 	}
 	
+	public void prepararEdicao() {
+		
+	}
+	
 	public void salvar() {
 		cadastroUsuarioService.salvar(usuario);
 		
-		if(jaHouvePesquisa()) {
-			pesquisar();
-		}else{
-			todosUsuarios();
-		}
+		atualizarPesquisa();
 		
 		messages.info("Usuario salvo com sucesso");
         
 		PrimeFaces.current().ajax().update(Arrays.asList(
                 "frm:usuariosDataTable", "frm:messages"));
 	}
+	
+	public void excluir() {
+		cadastroUsuarioService.excluir(usuario);
+		
+		usuario=null;
+		
+		atualizarPesquisa();
+		
+		messages.info("Usuario excluído com sucesso");
+	}
+	
+	public void atualizarPesquisa(){
+		if(jaHouvePesquisa()) {
+			pesquisar();
+		}else{
+			todosUsuarios();
+		}
+	} 
 	
 	private boolean jaHouvePesquisa(){
 		return termoPesquisa!=null && !"".equals(termoPesquisa);

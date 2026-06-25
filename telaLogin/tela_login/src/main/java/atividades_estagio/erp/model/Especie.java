@@ -5,6 +5,7 @@ public enum Especie {
 	GATO,
 	PEIXE,
 	ROEDOR,
-	PASSARO
+	PASSARO,
+	OUTRA
 
 }
