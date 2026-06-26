@@ -9,7 +9,7 @@
 	<display-name>curso-yt</display-name>
 	
 	<welcome-file-list>
-		<welcome-file>GestaoUsuarios.xhtml</welcome-file>
+		<welcome-file>Login.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<context-param>

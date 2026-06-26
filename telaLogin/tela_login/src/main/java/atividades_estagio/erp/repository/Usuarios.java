@@ -37,6 +37,27 @@ public class Usuarios implements Serializable {
 		return query.getResultList();
 	}
 	
+	public Usuario porEmail(String email){
+		String jpql="from Usuario where email = :email";
+		
+		TypedQuery<Usuario> query=manager.createQuery(jpql, Usuario.class);
+		query.setParameter("email", email);
+		return query.getSingleResult(); //espero q isso retorne um Usuario
+	}
+	
+	public Usuario porEmailESenha(String email, String senha){
+		try {
+			String jpql="from Usuario where email = :email and senha = :senha";
+			
+			TypedQuery<Usuario> query=manager.createQuery(jpql, Usuario.class);
+			query.setParameter("email", email);
+			query.setParameter("senha", senha);
+			return query.getSingleResult();
+		}catch(Exception e){
+			return null;
+		}
+	}
+	
 	//retorna lista com todos os usuarios
 	public List<Usuario> todos() {
 		TypedQuery<Usuario> query = manager.createQuery("from Usuario", Usuario.class);
