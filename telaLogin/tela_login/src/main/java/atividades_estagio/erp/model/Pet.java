@@ -73,12 +73,6 @@ public class Pet implements Serializable {
 		this.dono = dono;
 	}
 	
-	/*
-	public String getNomeDono(){
-		return dono.getNome();
-	}
-	*/
-	
 	public Especie getEspecie() {
 		return especie;
 	}

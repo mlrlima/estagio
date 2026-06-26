@@ -30,7 +30,7 @@ public class GestaoUsuariosBean implements Serializable {
 	private Usuario usuario;
 	
     @Inject
-    private FacesMessages messages;
+    private FacesMessages messages; //nao tem get nem set
 	
 	@Inject
 	private CadastroUsuarioService cadastroUsuarioService;

@@ -8,7 +8,7 @@
  	
  	<!-- :h == tag do jsf -->
  	
-	<ui:define name="titulo">Cadastro dos Usuarios</ui:define>
+	<ui:define name="titulo">Cadastro dos Pets</ui:define>
 
 	<ui:define name="conteudo">
 	
@@ -21,10 +21,153 @@
 			<p:messages id="messages" showDetail="true" />
 			
 			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					
+					<p:inputText id="termoPesquisa"
+								 placeholder="Pesquisar"
+								 value="#{gestaoPetsBean.termoPesquisa}" />
+					<p:commandButton icon="pi pi-search"
+									 actionListener="#{gestaoPetsBean.pesquisar}"
+									 update="petsDataTable messages"
+									 process="@this termoPesquisa" />
+					
+				</f:facet>
+				<f:facet name="right">
+					
+					<p:commandButton value="Novo"
+									 icon="pi pi-plus"
+									 actionListener="#{gestaoPetsBean.prepararNovoPet}"
+									 oncomplete="PF('petDialogWidgetVar').show()"
+									 update="petDialog"
+									 process="@this" >
+						<p:resetInput target="petDialog" />
+					</p:commandButton>
+					
+					<p:separator />
+					
+					<p:commandButton value="Editar"
+									 icon="pi pi-pencil"
+									 disabled="#{not gestaoPetsBean.petSelecionado}"
+									 oncomplete="PF('petDialogWidgetVar').show()"
+									 update="petDialog"
+									 process="@this" >
+									 
+						<p:resetInput target="petDialog"/>
+					</p:commandButton>
+					
+					<p:separator />
+					
+					<p:commandButton value="Excluir"
+									 icon="pi pi-minus"
+									 disabled="#{not gestaoPetsBean.petSelecionado}"
+									 actionListener="#{gestaoPetsBean.excluir}"
+									 update="messages petsDataTable toolbar"
+									 process="@this" >
+					
+						<!-- nao ta funcionando
+						<p:confirm header="Confirmação de exclusão"
+								   icon="pi pi-exclamation-triangle"/>
+									 
+								-->
+					</p:commandButton>
+					
+				</f:facet>
 			</p:toolbar>
+			
+			<p:spacer height="20px"></p:spacer>
+			
+			<p:dataTable id="petsDataTable"
+						 value="#{gestaoPetsBean.listaPets}"
+						 var="pet"
+						 emptyMessage="Nenhuma informação encontrada."
+						 
+						 selectionMode="single"
+						 selection="#{gestaoPetsBean.pet}"
+						 rowKey="#{pet.id}" >
+						 
+				<p:ajax event="rowSelect"
+						update="frm:toolbar" />
+				<p:ajax event="rowUnselect"
+						update="frm:toolbar" />
+						 
+				<p:column headerText="Nome"
+						  sortBy="#{pet.nome}">
+					<h:outputText value="#{pet.nome}"/>
+				</p:column>
+				
+				<p:column headerText="Especie"
+						  sortBy="#{pet.especie}" >
+					<h:outputText value="#{pet.especie}" />
+				</p:column>
+				
+				<p:column headerText="Dono(user)"
+						  sortBy="#{pet.dono.email}">
+					<h:outputText value="#{pet.dono.email}"/>
+				</p:column>
+				
+			</p:dataTable>
+		
+			<p:dialog id="petDialog"
+					  header="Novo pet"
+					  widgetVar="petDialogWidgetVar"
+					  modal="true" >
+				
+				<p:defaultCommand target="salvarCommandButton"
+								  scope="petDialog" />
+								  
+				<h:panelGrid id="petPanelGrid"
+							 columns="2"
+							 rendered="#{gestaoPetsBean.pet ne null}" >
+					
+					<p:outputLabel value="Nome: "
+								   for="nome" />
+					<h:panelGroup>
+						<p:inputText id="nome"
+									 maxlength="100"
+									 required="true"
+									 value="#{gestaoPetsBean.pet.nome}" />
+						<p:message for="nome" />
+					</h:panelGroup>
+					
+					<p:outputLabel value="Especie: "
+								   for="especie" />
+					<h:panelGroup>
+						<p:selectOneMenu id="especie"
+										 value="gestaoPetsBean.pet.especie">
+							<f:selectItem itemLabel="Selecione: " />
+							<f:selectItems value="#{gestaoPetsBean.especies}"
+										   var="especie"
+										   itemValue="#{especie}" />
+						</p:selectOneMenu>
+						
+						<p:message for="especie" />
+					</h:panelGroup>
+					
+					<h:panelGroup>
+						<p:selectOneMenu id="dono"
+										 value="#{gestaoPetsBean.pet.dono}">
+							<f:selectItem itemLabel="Selecione: " />
+							<f:selectItems value="#{gestaoPetsBean.todosUsuarios}"
+										   var="dono"
+										   itemValue="#{dono}"
+										   itemLabel="#{dono.email}" />
+						</p:selectOneMenu>
+						
+						<p:message for="especie" />
+					</h:panelGroup>
+					
+					<p:outputLabel />
+					<p:commandButton id="salvarCommandButton"
+									 value="Salvar"
+									 actionListener="#{gestaoPetsBean.salvar}"
+									 update="petPanelGrid"
+									 oncomplete="if(!args.validationfailed) PF('petDialogWidgetVar').hide()"
+									 process="petDialog" />
+							 
+				</h:panelGrid>
+					  
+			</p:dialog>
 		
 		</h:form>
-	
 	</ui:define>
-
-</html>
+</ui:composition>

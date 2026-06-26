@@ -37,7 +37,8 @@
 				</f:facet>
 				<f:facet name="right">
 				
-					<p:commandButton value="Novo" icon="pi pi-user-plus" 
+					<p:commandButton value="Novo"
+									 icon="pi pi-user-plus" 
 									 actionListener="#{gestaoUsuariosBean.prepararNovoUsuario}"
 									 oncomplete="PF('usuarioDialogWidgetVar').show()"
 									 update="usuarioDialog"
@@ -185,7 +186,8 @@
 									 value="Salvar"
 									 actionListener="#{gestaoUsuariosBean.salvar}"
 									 update="usuarioPanelGrid"
-									 oncomplete="if(!args.validationFailed) PF('usuarioDialogWidgetVar').hide()" process="usuarioDialog" />
+									 oncomplete="if(!args.validationFailed) PF('usuarioDialogWidgetVar').hide()"
+									 process="usuarioDialog" />
 					
 				</h:panelGrid>
 			

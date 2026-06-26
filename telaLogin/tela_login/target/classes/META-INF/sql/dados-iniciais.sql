@@ -4,5 +4,7 @@ insert into usuario(email, nome, senha, role) values('andre123@email.com', 'andr
 insert into usuario(email, nome, senha, role) values('carla@email.com', 'carla', 'senha123', 'USER');
 
 
--- insert into pet(id, nome, user_id, especie) values(1, 'toto', 1, 'GATO');
--- insert into pet(id, nome, user_id, especie) values(2, 'blu', 1, 'PASSARO');
+insert into pet(nome, user_id, especie) values('totó', 1, 'GATO');
+insert into pet(nome, user_id, especie) values('blu', 4, 'PASSARO');
+insert into pet(nome, user_id, especie) values('darvin', 2, 'CACHORRO');
+insert into pet(nome, user_id, especie) values('JADE', 1, 'PASSARO');
