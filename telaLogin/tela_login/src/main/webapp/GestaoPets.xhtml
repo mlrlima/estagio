@@ -133,7 +133,7 @@
 								   for="especie" />
 					<h:panelGroup>
 						<p:selectOneMenu id="especie"
-										 value="gestaoPetsBean.pet.especie">
+										 value="#{gestaoPetsBean.pet.especie}">
 							<f:selectItem itemLabel="Selecione: " />
 							<f:selectItems value="#{gestaoPetsBean.especies}"
 										   var="especie"
@@ -143,17 +143,20 @@
 						<p:message for="especie" />
 					</h:panelGroup>
 					
+					
+					<p:outputLabel value="Dono: "
+								   for="dono" />
 					<h:panelGroup>
 						<p:selectOneMenu id="dono"
-										 value="#{gestaoPetsBean.pet.dono}">
+										 value="#{gestaoPetsBean.usuarioId}" >
 							<f:selectItem itemLabel="Selecione: " />
 							<f:selectItems value="#{gestaoPetsBean.todosUsuarios}"
 										   var="dono"
-										   itemValue="#{dono}"
+										   itemValue="#{dono.id}"
 										   itemLabel="#{dono.email}" />
 						</p:selectOneMenu>
 						
-						<p:message for="especie" />
+						<p:message for="dono" />
 					</h:panelGroup>
 					
 					<p:outputLabel />

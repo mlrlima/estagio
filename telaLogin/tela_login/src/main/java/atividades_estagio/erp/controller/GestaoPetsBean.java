@@ -41,6 +41,15 @@ public class GestaoPetsBean implements Serializable {
 	@Inject
 	private Usuarios usuarios;
 	
+	private Long usuarioId;
+	
+	public void setUsuarioId(Long usuarioId) {
+		this.usuarioId=usuarioId;
+	}
+	public Long getUsuarioId() {
+		return usuarioId;
+	}
+	
 	public void pesquisar() {
 		listaPets=pets.pesquisar(termoPesquisa);
 		
@@ -74,11 +83,16 @@ public class GestaoPetsBean implements Serializable {
 	}
 	
 	public void prepararNovoPet(){
+		
+		//System.out.println("chegou aqui");
 		pet=new Pet();
 	}
 	
 	public void salvar() {
+		pet.setDono(usuarios.porId(usuarioId));
+		System.out.println("chegou aqui 2");
 		cadastroPetService.salvar(pet);
+		System.out.println("chegou aqui3");
 		
 		atualizarPesquisa();
 		
