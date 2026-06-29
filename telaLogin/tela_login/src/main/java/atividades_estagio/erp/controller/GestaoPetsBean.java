@@ -24,6 +24,9 @@ public class GestaoPetsBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
+	private LoginBean loginBean;
+	
+	@Inject
 	private Pets pets;
 	
 	private Pet pet;
@@ -53,11 +56,20 @@ public class GestaoPetsBean implements Serializable {
 	public void pesquisar() {
 		listaPets=pets.pesquisar(termoPesquisa);
 		
+		if(!listaPets.isEmpty() && !loginBean.isAdmin()) {
+			listaPets=pets.filtrarPetsDoUsuario(listaPets, loginBean.getUsuario());
+		}
+		
 		if(listaPets.isEmpty()) messages.info("Não encontrado");
+
 	}
 	
 	public void todosPets() {
 		listaPets=pets.todos();
+		
+		if(!listaPets.isEmpty() && !loginBean.isAdmin()) {
+			listaPets=pets.filtrarPetsDoUsuario(listaPets, loginBean.getUsuario());
+		}
 	}
 	
 	public List<Pet> getListaPets(){

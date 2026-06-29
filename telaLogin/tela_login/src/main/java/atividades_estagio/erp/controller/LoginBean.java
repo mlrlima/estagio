@@ -2,16 +2,17 @@ package atividades_estagio.erp.controller;
 
 import java.io.Serializable;
 
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import atividades_estagio.erp.model.Role;
 import atividades_estagio.erp.model.Usuario;
 import atividades_estagio.erp.repository.Usuarios;
 import atividades_estagio.erp.util.FacesMessages;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -26,14 +27,17 @@ public class LoginBean implements Serializable {
 	private String emailInput;
 	private String senhaInput;
 	
-	public void login() {
+	public String login() {
 		usuario=usuarios.porEmailESenha(emailInput, senhaInput);
 		
 		if(usuario==null){
 			messages.info("Informações incorretas");
-		}else {
-			messages.info("Login feito com sucesso");
+			return null;
 		}
+
+		messages.info("Login realizado com sucesso!");
+
+	    return "GestaoPets?faces-redirect=true";
 	}
 	
 	public void setEmailInput(String emailInput) {
@@ -48,5 +52,17 @@ public class LoginBean implements Serializable {
 	}
 	public String getSenhaInput() {
 		return senhaInput;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	
+	public boolean isAdmin(){
+	    return isLogado() && usuario.getRole()==Role.ADMIN;
+	}
+
+	public boolean isLogado(){
+	    return usuario!=null;
 	}
 }

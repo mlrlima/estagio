@@ -1,6 +1,7 @@
 package atividades_estagio.erp.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +24,9 @@ import atividades_estagio.erp.util.FacesMessages;
 //@ApplicationScoped
 public class GestaoUsuariosBean implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private LoginBean loginBean;
 
 	@Inject
 	private Usuarios usuarios;
@@ -82,7 +86,15 @@ public class GestaoUsuariosBean implements Serializable {
 	}
 	
 	public void pesquisar(){
-		listaUsuarios=usuarios.pesquisar(termoPesquisa);
+		
+		System.out.println("Usuário logado: " + loginBean.getUsuario());
+		
+		if(loginBean.isAdmin()) {
+			listaUsuarios=usuarios.pesquisar(termoPesquisa);
+		}else {
+			listaUsuarios=new ArrayList<Usuario>();
+			listaUsuarios.add(loginBean.getUsuario());
+		}
 		
 		if (listaUsuarios.isEmpty()) {
             messages.info("Não encontrado");
@@ -90,7 +102,12 @@ public class GestaoUsuariosBean implements Serializable {
 	}
 	
 	public void todosUsuarios() {
-		listaUsuarios=usuarios.todos();
+		if(loginBean.isAdmin()) {
+			listaUsuarios=usuarios.todos();
+		}else {
+			listaUsuarios=new ArrayList<Usuario>();
+			listaUsuarios.add(loginBean.getUsuario());
+		}
 	}
 	
 	public List<Usuario> getListaUsuarios(){

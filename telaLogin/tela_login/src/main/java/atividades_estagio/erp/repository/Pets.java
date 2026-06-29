@@ -1,6 +1,7 @@
 package atividades_estagio.erp.repository;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import atividades_estagio.erp.model.Pet;
+import atividades_estagio.erp.model.Usuario;
 
 public class Pets implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -39,6 +41,18 @@ public class Pets implements Serializable {
 	public List<Pet> todos(){
 		TypedQuery<Pet> query=manager.createQuery("from Pet", Pet.class);
 		return query.getResultList();
+	}
+	
+	public List<Pet> filtrarPetsDoUsuario(List<Pet> todosPets, Usuario usuario) {
+	    List<Pet> doUsuario = new ArrayList<>();
+
+	    for (Pet pet : todosPets) {
+	        if (pet.getDono().getId().equals(usuario.getId())) {
+	        	doUsuario.add(pet);
+	        }
+	    }
+
+	    return doUsuario;
 	}
 
 	//create && update
