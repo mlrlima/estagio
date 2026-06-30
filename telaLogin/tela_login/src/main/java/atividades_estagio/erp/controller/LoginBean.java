@@ -3,6 +3,7 @@ package atividades_estagio.erp.controller;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -26,6 +27,12 @@ public class LoginBean implements Serializable {
 	
 	private String emailInput;
 	private String senhaInput;
+	
+	public String logout(){
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+
+		return "/Login?faces-redirect=true";
+	}
 	
 	public String login() {
 		usuario=usuarios.porEmailESenha(emailInput, senhaInput);

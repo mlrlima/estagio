@@ -13,11 +13,17 @@
  		<h:form>
 			<p:commandButton value="Novo usuario"
 			                 action="CriarUsuario?faces-redirect=true"
-			                 icon="pi pi-user-plus" />	
+			                 icon="pi pi-user-plus"
+			                 process="@this"
+                 			 immediate="true" >
+			
+			<p:resetInput target="loginPanelGrid"/>                 
+			</p:commandButton>	
 		
  			<p:messages id="messages" />
  			
- 			<p:panelGrid columns="2">
+ 			<p:panelGrid id="loginPanelGrid" 
+ 						 columns="2">
  				<p:outputLabel value="Email: "
  							   for="emailInput" />
  				<p:inputText id="emailInput"
@@ -26,14 +32,19 @@
  							 
  				<p:outputLabel value="Senha: "
  							   for="senhaInput" />
- 				<p:inputText id="senhaInput"
- 							 placeholder="Informe a senha"
- 							 value="#{loginBean.senhaInput}" />
- 							 
+ 				<p:password id="senhaInput"
+ 							placeholder="Informe a senha"
+ 							value="#{loginBean.senhaInput}"
+ 							toggleMask="true"
+ 							redisplay="true"/>
+ 							
  				<p:outputLabel/>
  				<p:commandButton action="#{loginBean.login}"
  								 update="messages" 
- 								 value="Entrar" />
+ 								 value="Entrar" >
+			
+					<p:resetInput target="@form"/>                 
+				</p:commandButton>
  				
  			
  			</p:panelGrid>

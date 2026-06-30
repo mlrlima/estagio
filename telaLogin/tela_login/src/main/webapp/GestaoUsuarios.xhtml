@@ -159,10 +159,12 @@
 					<p:outputLabel value="Senha: "
 								   for="senha" />
 					<h:panelGroup>
-						<p:inputText id="senha"
-									 maxlength="50"
-									 required="true"
-									 value="#{gestaoUsuariosBean.usuario.senha}" />
+						<p:password id="senha"
+		 							value="#{loginBean.senhaInput}"
+		 							toggleMask="true"
+		 							maxlength="50"
+									required="true"
+		 							redisplay="true"/>
 						<!-- mensagem de erro -->
 						<p:message for="senha"/>
 					</h:panelGroup>
