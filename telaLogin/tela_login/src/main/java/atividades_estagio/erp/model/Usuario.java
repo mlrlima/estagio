@@ -43,7 +43,7 @@ public class Usuario implements Serializable{
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	@Column(nullable=true)
+	@Column(nullable=false)
 	private Role role;
 
 	

@@ -1,8 +1,10 @@
 package atividades_estagio.erp.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,7 +30,17 @@ public class LoginBean implements Serializable {
 	private String emailInput;
 	private String senhaInput;
 	
+	public void redirecionarTelaLogin() throws IOException{
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	    ec.redirect(ec.getRequestContextPath() + "/Login.xhtml");
+	}
+	
+	public void telaLogin(){
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	}
+	
 	public String logout(){
+		usuario=null;
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
 		return "/Login?faces-redirect=true";

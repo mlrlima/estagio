@@ -1,9 +1,12 @@
 package atividades_estagio.erp.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -64,11 +67,16 @@ public class GestaoPetsBean implements Serializable {
 
 	}
 	
-	public void todosPets() {
-		listaPets=pets.todos();
-		
-		if(!listaPets.isEmpty() && !loginBean.isAdmin()) {
-			listaPets=pets.filtrarPetsDoUsuario(listaPets, loginBean.getUsuario());
+	public void todosPets() throws IOException {
+		try {
+			listaPets=pets.todos();
+			
+			if(!listaPets.isEmpty() && !loginBean.isAdmin()) {
+				listaPets=pets.filtrarPetsDoUsuario(listaPets, loginBean.getUsuario());
+			}
+		}catch(Exception e) {
+			messages.info("Não há usuario logado");
+			loginBean.redirecionarTelaLogin();
 		}
 	}
 	
@@ -100,22 +108,31 @@ public class GestaoPetsBean implements Serializable {
 		pet=new Pet();
 	}
 	
-	public void salvar() {
-		pet.setDono(usuarios.porId(usuarioId));
-		System.out.println("chegou aqui 2");
-		cadastroPetService.salvar(pet);
-		System.out.println("chegou aqui3");
+	public void salvar() throws IOException {
 		
-		atualizarPesquisa();
+		try {
 		
-		messages.info("Pet salvo com sucesso");
+			pet.setDono(usuarios.porId(usuarioId));
+			//System.out.println("chegou aqui 2");
+			cadastroPetService.salvar(pet);
+			//System.out.println("chegou aqui3");
+			
+			atualizarPesquisa();
+			
+			messages.info("Pet salvo com sucesso");
+			
+			PrimeFaces.current().ajax().update(Arrays.asList(
+	                "frm:petsDataTable", "frm:messages"));
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			messages.info("Algo deu errado");
+		}
 		
-		PrimeFaces.current().ajax().update(Arrays.asList(
-                "frm:petsDataTable", "frm:messages"));
 		
 	}
 	
-	public void atualizarPesquisa(){
+	public void atualizarPesquisa() throws IOException{
 		if(jaHouvePesquisa()) {
 			pesquisar();
 		}else{
@@ -127,7 +144,7 @@ public class GestaoPetsBean implements Serializable {
 		return termoPesquisa!=null && !"".equals(termoPesquisa);
 	}
 	
-	public void excluirPetsUsuario(Usuario usuario){
+	public void excluirPetsUsuario(Usuario usuario) throws IOException{
 		listaPets=pets.todos();
 		listaPets=pets.filtrarPetsDoUsuario(listaPets, usuario);
 		
@@ -138,7 +155,7 @@ public class GestaoPetsBean implements Serializable {
 		atualizarPesquisa();
 	}
 	
-	public void excluir() {
+	public void excluir() throws IOException {
 		cadastroPetService.excluir(pet);
 		
 		pet=null;

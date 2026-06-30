@@ -96,13 +96,10 @@ public class GestaoUsuariosBean implements Serializable {
 		
 		messages.info("Usuario excluído com sucesso");
 		
-		if(autoExcluir) {
-			ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		    ec.redirect(ec.getRequestContextPath() + "/Login.xhtml");
-		}
+		if(autoExcluir) loginBean.redirecionarTelaLogin();
 	}
 	
-	public void atualizarPesquisa(){
+	public void atualizarPesquisa() throws IOException{
 		if(jaHouvePesquisa()) {
 			pesquisar();
 		}else{
@@ -130,7 +127,13 @@ public class GestaoUsuariosBean implements Serializable {
         }
 	}
 	
-	public void todosUsuarios() {
+	public void todosUsuarios() throws IOException {
+		if(!loginBean.isLogado()) {
+			loginBean.redirecionarTelaLogin();
+			return;
+		}
+		
+		
 		if(loginBean.isAdmin()) {
 			listaUsuarios=usuarios.todos();
 		}else {

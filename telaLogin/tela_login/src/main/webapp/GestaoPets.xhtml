@@ -137,8 +137,9 @@
 								   for="especie" />
 					<h:panelGroup>
 						<p:selectOneMenu id="especie"
-										 value="#{gestaoPetsBean.pet.especie}">
-							<f:selectItem itemLabel="Selecione: " />
+										 value="#{gestaoPetsBean.pet.especie}"
+										 required="true" >
+							<f:selectItem itemLabel="Selecione: " itemValue="#{null}" noSelectionOption="true" />
 							<f:selectItems value="#{gestaoPetsBean.especies}"
 										   var="especie"
 										   itemValue="#{especie}" />
@@ -152,8 +153,9 @@
 								   for="dono" />
 					<h:panelGroup>
 						<p:selectOneMenu id="dono"
-										 value="#{gestaoPetsBean.usuarioId}" >
-							<f:selectItem itemLabel="Selecione: " />
+										 value="#{gestaoPetsBean.usuarioId}"
+										 required="true" >
+							<f:selectItem itemLabel="Selecione: " itemValue="#{null}" noSelectionOption="true" />
 							<f:selectItems value="#{gestaoPetsBean.todosUsuarios}"
 										   var="dono"
 										   itemValue="#{dono.id}"
@@ -167,14 +169,19 @@
 					<p:commandButton id="salvarCommandButton"
 									 value="Salvar"
 									 actionListener="#{gestaoPetsBean.salvar}"
-									 update="petPanelGrid"
-									 oncomplete="if(!args.validationfailed) PF('petDialogWidgetVar').hide()"
+									 update="petDialog"
+									 oncomplete="if(!args.validationFailed) PF('petDialogWidgetVar').hide()"
 									 process="petDialog" />
 							 
 				</h:panelGrid>
 					  
 			</p:dialog>
 		
+			<p:commandButton value="Logout"
+				                 action="#{loginBean.logout}"
+				                 icon="pi pi-sign-out" />
+		
 		</h:form>
+		
 	</ui:define>
 </ui:composition>

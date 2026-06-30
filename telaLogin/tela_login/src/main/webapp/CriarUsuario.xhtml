@@ -11,10 +11,13 @@
 	 	<ui:define name="conteudo">
 	 	
 	 	<f:metadata>
+	 		<f:viewAction action="#{loginBean.telaLogin}" />
 		    <f:viewAction action="#{gestaoUsuariosBean.prepararNovoUsuario}" />
 		</f:metadata>
 	 	
 	 		<h:form>
+	 			<p:defaultCommand target="salvarCommandButton" />
+	 		
 				<p:commandButton value="Login"
 				                 action="Login?faces-redirect=true"
 				                 process="@this"
@@ -59,8 +62,7 @@
 		 							value="#{gestaoUsuariosBean.usuario.senha}"
 		 							toggleMask="true"
 		 							maxlength="50"
-									required="true"
-		 							redisplay="true"/>
+									required="true"/>
 						<!-- mensagem de erro -->
 						<p:message for="senha"/>
 					</h:panelGroup>
@@ -84,7 +86,8 @@
 					<p:outputLabel/>
 					<p:commandButton value="Salvar"
 									 actionListener="#{gestaoUsuariosBean.salvar}"
-									 update="messages" >
+									 update="messages"
+									 id="salvarCommandButton" >
 			
 						<p:resetInput target="@form"/>
 					</p:commandButton>	       

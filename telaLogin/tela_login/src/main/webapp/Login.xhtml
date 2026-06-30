@@ -10,7 +10,13 @@
  	
  	<ui:define name="conteudo">
  	
+ 		<f:metadata>
+		    <f:viewAction action="#{loginBean.telaLogin}" />
+		</f:metadata>
+ 	
  		<h:form>
+ 			<p:defaultCommand target="entrarCommandButton" />
+ 		
 			<p:commandButton value="Novo usuario"
 			                 action="CriarUsuario?faces-redirect=true"
 			                 icon="pi pi-user-plus"
@@ -35,13 +41,13 @@
  				<p:password id="senhaInput"
  							placeholder="Informe a senha"
  							value="#{loginBean.senhaInput}"
- 							toggleMask="true"
- 							redisplay="true"/>
+ 							toggleMask="true" />
  							
  				<p:outputLabel/>
  				<p:commandButton action="#{loginBean.login}"
  								 update="messages" 
- 								 value="Entrar" >
+ 								 value="Entrar"
+ 								 id="entrarCommandButton" >
 			
 					<p:resetInput target="@form"/>                 
 				</p:commandButton>
