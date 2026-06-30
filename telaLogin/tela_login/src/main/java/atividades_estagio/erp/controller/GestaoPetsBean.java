@@ -127,6 +127,17 @@ public class GestaoPetsBean implements Serializable {
 		return termoPesquisa!=null && !"".equals(termoPesquisa);
 	}
 	
+	public void excluirPetsUsuario(Usuario usuario){
+		listaPets=pets.todos();
+		listaPets=pets.filtrarPetsDoUsuario(listaPets, usuario);
+		
+		for (Pet it:listaPets) {
+		    cadastroPetService.excluir(it);
+		}
+		
+		atualizarPesquisa();
+	}
+	
 	public void excluir() {
 		cadastroPetService.excluir(pet);
 		

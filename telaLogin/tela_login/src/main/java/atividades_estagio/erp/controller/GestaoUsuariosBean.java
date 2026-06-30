@@ -1,10 +1,13 @@
 package atividades_estagio.erp.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -39,6 +42,9 @@ public class GestaoUsuariosBean implements Serializable {
 	@Inject
 	private CadastroUsuarioService cadastroUsuarioService;
 	
+	@Inject
+	private GestaoPetsBean gestaoPetsBean;
+	
 	private String termoPesquisa;
 	
 	private List<Usuario> listaUsuarios;
@@ -72,7 +78,16 @@ public class GestaoUsuariosBean implements Serializable {
 		}
 	}
 	
-	public void excluir() {
+	public void excluir() throws IOException {
+		
+		//excluir todos os pets desse usuario
+		gestaoPetsBean.excluirPetsUsuario(usuario);
+		
+		boolean autoExcluir=false;
+		if(usuario.equals(loginBean.getUsuario())) autoExcluir=true;
+		
+		System.out.println(autoExcluir);
+		
 		cadastroUsuarioService.excluir(usuario);
 		
 		usuario=null;
@@ -80,6 +95,11 @@ public class GestaoUsuariosBean implements Serializable {
 		atualizarPesquisa();
 		
 		messages.info("Usuario excluído com sucesso");
+		
+		if(autoExcluir) {
+			ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		    ec.redirect(ec.getRequestContextPath() + "/Login.xhtml");
+		}
 	}
 	
 	public void atualizarPesquisa(){
