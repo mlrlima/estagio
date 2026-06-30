@@ -23,7 +23,9 @@
 			<p:defaultCommand target="pesquisarCommandButton" />
 		
 			<p:commandButton value="Gerenciar Pets"
-                 			 action="GestaoPets?faces-redirect=true" />
+                 			 action="GestaoPets?faces-redirect=true"
+                 			 process="@this"
+                 			 immediate="true" />
 		
 			<p:messages id="messages" showDetail="true" />
 		
@@ -132,6 +134,8 @@
 			
 				<p:defaultCommand target="salvarCommandButton"
 								  scope="usuarioDialog"/>
+								  
+				<p:messages id="messagesPanelGrid" showDetail="true" />
 			
 				<h:panelGrid id="usuarioPanelGrid"
 							 columns="2"
@@ -163,7 +167,7 @@
 								   for="senha" />
 					<h:panelGroup>
 						<p:password id="senha"
-		 							value="#{loginBean.senhaInput}"
+		 							value="#{gestaoUsuariosBean.usuario.senha}"
 		 							toggleMask="true"
 		 							maxlength="50"
 									required="true"/>

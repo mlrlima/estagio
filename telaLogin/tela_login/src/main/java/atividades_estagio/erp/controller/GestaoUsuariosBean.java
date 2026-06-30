@@ -55,6 +55,9 @@ public class GestaoUsuariosBean implements Serializable {
 	}
 	
 	public void prepararEdicao() {
+		if (usuario.equals(loginBean.getUsuario())) {
+	        messages.info("Ao alterar seu próprio email e/ou senha, o login deverá ser realizado novamente");
+	    }
 		
 	}
 	
@@ -64,7 +67,24 @@ public class GestaoUsuariosBean implements Serializable {
 		//System.out.println("senha: " + usuario.getSenha());
 		
 		try {
+			if(!loginBean.isAdmin() && !usuario.equals(loginBean.getUsuario())) {
+				messages.info("Acesso negado");
+				return;
+			}
+			
+			boolean autoSalvar=false;
+			if(usuario.equals(loginBean.getUsuario()) &&
+					(usuario.getEmail()!=loginBean.getEmailInput()
+					|| usuario.getSenha()!=loginBean.getSenhaInput()) ){
+				autoSalvar=true;
+			}
+			
 			cadastroUsuarioService.salvar(usuario);
+			
+			if(autoSalvar){
+				loginBean.redirecionarTelaLogin();
+				return;
+			}
 			
 			atualizarPesquisa();
 			

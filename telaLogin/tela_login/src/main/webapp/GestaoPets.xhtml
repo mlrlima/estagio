@@ -18,9 +18,13 @@
 		
 		<h:form id="frm">
 		
+			<p:defaultCommand target="pesquisarCommandButton" />
+		
 			<p:commandButton value="Gerenciar Usuários"
           					 icon="pi pi-users"
-                 			 action="GestaoUsuarios?faces-redirect=true" />
+                 			 action="GestaoUsuarios?faces-redirect=true"
+                 			 process="@this"
+                 			 immediate="true" />
 			
 			<p:messages id="messages" showDetail="true" />
 			
@@ -33,7 +37,8 @@
 					<p:commandButton icon="pi pi-search"
 									 actionListener="#{gestaoPetsBean.pesquisar}"
 									 update="petsDataTable messages"
-									 process="@this termoPesquisa" />
+									 process="@this termoPesquisa"
+									 id="pesquisarCommandButton" />
 					
 				</f:facet>
 				<f:facet name="right">
@@ -169,7 +174,7 @@
 					<p:commandButton id="salvarCommandButton"
 									 value="Salvar"
 									 actionListener="#{gestaoPetsBean.salvar}"
-									 update="petDialog"
+									 update="petPanelGrid"
 									 oncomplete="if(!args.validationFailed) PF('petDialogWidgetVar').hide()"
 									 process="petDialog" />
 							 
