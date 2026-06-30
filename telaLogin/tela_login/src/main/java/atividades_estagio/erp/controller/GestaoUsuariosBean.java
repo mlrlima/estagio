@@ -53,14 +53,23 @@ public class GestaoUsuariosBean implements Serializable {
 	}
 	
 	public void salvar() {
-		cadastroUsuarioService.salvar(usuario);
+		//System.out.println("Email: " + usuario.getEmail());
+		//System.out.println("Nome: " + usuario.getNome());
+		//System.out.println("senha: " + usuario.getSenha());
 		
-		atualizarPesquisa();
-		
-		messages.info("Usuario salvo com sucesso");
-        
-		PrimeFaces.current().ajax().update(Arrays.asList(
-                "frm:usuariosDataTable", "frm:messages"));
+		try {
+			cadastroUsuarioService.salvar(usuario);
+			
+			atualizarPesquisa();
+			
+			messages.info("Usuario salvo com sucesso");
+	        
+			PrimeFaces.current().ajax().update(Arrays.asList(
+	                "frm:usuariosDataTable", "frm:messages"));
+			
+		}catch(Exception e){
+			messages.info("Algo deu errado");
+		}
 	}
 	
 	public void excluir() {
@@ -87,7 +96,7 @@ public class GestaoUsuariosBean implements Serializable {
 	
 	public void pesquisar(){
 		
-		System.out.println("Usuário logado: " + loginBean.getUsuario());
+		//System.out.println("Usuário logado: " + loginBean.getUsuario());
 		
 		if(loginBean.isAdmin()) {
 			listaUsuarios=usuarios.pesquisar(termoPesquisa);
