@@ -12,7 +12,7 @@
 	 	
 	 	<f:metadata>
 	 		<f:viewAction action="#{loginBean.telaLogin}" />
-		    <f:viewAction action="#{gestaoUsuariosBean.prepararNovoUsuario}" />
+		    <f:viewAction action="#{criarUsuarioBean.prepararNovoUsuario}" />
 		</f:metadata>
 	 	
 	 		<h:form>
@@ -31,7 +31,7 @@
 	 			
 	 			<h:panelGrid id="usuarioPanelGrid"
 	 						 columns="2"
-							 rendered="#{gestaoUsuariosBean.usuario ne null}">
+							 rendered="#{criarUsuarioBean.usuario ne null}">
 				
 					<p:outputLabel value="Nome: "
 								   for="nome" />
@@ -39,7 +39,7 @@
 						<p:inputText id="nome"
 									 maxlength="100"
 									 required="true" 
-									 value="#{gestaoUsuariosBean.usuario.nome}"/>
+									 value="#{criarUsuarioBean.usuario.nome}"/>
 						<!-- mensagem de erro -->
 						<p:message for="nome"/>
 					</h:panelGroup>
@@ -50,7 +50,7 @@
 						<p:inputText id="email"
 									 maxlength="50"
 									 required="true"
-									 value="#{gestaoUsuariosBean.usuario.email}"/>
+									 value="#{criarUsuarioBean.usuario.email}"/>
 						<!-- mensagem de erro -->
 						<p:message for="email"/>
 					</h:panelGroup>
@@ -59,7 +59,7 @@
 								   for="senha" />
 					<h:panelGroup>
 						<p:password id="senha"
-		 							value="#{gestaoUsuariosBean.usuario.senha}"
+		 							value="#{criarUsuarioBean.usuario.senha}"
 		 							toggleMask="true"
 		 							maxlength="50"
 									required="true"/>
@@ -71,9 +71,9 @@
 								   for="role" />
 					<h:panelGroup>
 						<p:selectOneMenu id="role"
-										 value="#{gestaoUsuariosBean.usuario.role}">
+										 value="#{criarUsuarioBean.usuario.role}">
 							<f:selectItem itemLabel="Selecione:" />
-							<f:selectItems value="#{gestaoUsuariosBean.roles}"
+							<f:selectItems value="#{criarUsuarioBean.roles}"
 										   var="role"
 										   itemValue="#{role}"/>
 						</p:selectOneMenu>
@@ -85,7 +85,7 @@
 					
 					<p:outputLabel/>
 					<p:commandButton value="Salvar"
-									 actionListener="#{gestaoUsuariosBean.salvar}"
+									 actionListener="#{criarUsuarioBean.salvar}"
 									 update="messages"
 									 id="salvarCommandButton" >
 			

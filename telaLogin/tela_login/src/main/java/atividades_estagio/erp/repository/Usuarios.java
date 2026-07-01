@@ -38,11 +38,16 @@ public class Usuarios implements Serializable {
 	}
 	
 	public Usuario porEmail(String email){
-		String jpql="from Usuario where email = :email";
+		try {
+			String jpql="from Usuario where email = :email";
+			
+			TypedQuery<Usuario> query=manager.createQuery(jpql, Usuario.class);
+			query.setParameter("email", email);
+			return query.getSingleResult(); //espero q isso retorne um Usuario
+		}catch(Exception e) {
+			return null;
+		}
 		
-		TypedQuery<Usuario> query=manager.createQuery(jpql, Usuario.class);
-		query.setParameter("email", email);
-		return query.getSingleResult(); //espero q isso retorne um Usuario
 	}
 	
 	public Usuario porEmailESenha(String email, String senha){

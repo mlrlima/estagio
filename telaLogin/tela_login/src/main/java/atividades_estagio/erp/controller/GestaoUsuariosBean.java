@@ -56,9 +56,17 @@ public class GestaoUsuariosBean implements Serializable {
 	
 	public void prepararEdicao() {
 		if (usuario.equals(loginBean.getUsuario())) {
-	        messages.info("Ao alterar seu próprio email e/ou senha, o login deverá ser realizado novamente");
+	        messages.info("Ao salvar suas próprias informações, o login deverá ser realizado novamente");
 	    }
 		
+	}
+	
+	private boolean emailJaExiste(String email) {
+		Usuario existe=usuarios.porEmail(email);
+		 
+		if(existe==null || existe.equals(usuario)) return false;
+		
+		return true;
 	}
 	
 	public void salvar() {
@@ -73,10 +81,13 @@ public class GestaoUsuariosBean implements Serializable {
 			}
 			
 			boolean autoSalvar=false;
-			if(usuario.equals(loginBean.getUsuario()) &&
-					(usuario.getEmail()!=loginBean.getEmailInput()
-					|| usuario.getSenha()!=loginBean.getSenhaInput()) ){
+			if(usuario.equals(loginBean.getUsuario())){
 				autoSalvar=true;
+			}
+			
+			if(emailJaExiste(usuario.getEmail())) {
+				messages.info("Email já em uso");
+				return;
 			}
 			
 			cadastroUsuarioService.salvar(usuario);

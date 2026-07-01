@@ -183,8 +183,10 @@
 			</p:dialog>
 		
 			<p:commandButton value="Logout"
-				                 action="#{loginBean.logout}"
-				                 icon="pi pi-sign-out" />
+				             action="#{loginBean.logout}"
+				             icon="pi pi-sign-out"
+				             process="@this"
+                 			 immediate="true" />
 		
 		</h:form>
 		
