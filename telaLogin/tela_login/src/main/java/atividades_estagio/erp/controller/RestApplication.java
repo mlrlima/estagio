@@ -1,4 +1,4 @@
-package atividades_estagio.erp.rest;
+package atividades_estagio.erp.controller;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

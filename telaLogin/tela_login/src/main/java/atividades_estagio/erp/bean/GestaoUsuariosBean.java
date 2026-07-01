@@ -1,4 +1,4 @@
-package atividades_estagio.erp.controller;
+package atividades_estagio.erp.bean;
 
 import java.io.IOException;
 import java.io.Serializable;

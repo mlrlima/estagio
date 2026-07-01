@@ -1,5 +1,5 @@
 
-package atividades_estagio.erp.rest.dto;
+package atividades_estagio.erp.controller.dto;
 //Data Transfer Object
 //transportar dados entre o cliente e o servidor
 

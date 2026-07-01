@@ -1,4 +1,4 @@
-package atividades_estagio.erp.rest;
+package atividades_estagio.erp.controller;
  
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -7,10 +7,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
- 
+
+import atividades_estagio.erp.controller.dto.LoginRequest;
 import atividades_estagio.erp.model.Usuario;
 import atividades_estagio.erp.repository.Usuarios;
-import atividades_estagio.erp.rest.dto.LoginRequest;
 
 /**
  * POST /api/login
