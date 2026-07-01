@@ -1,0 +1,144 @@
+# todos criados pelo Claude
+
+# create a user first if your DB is empty, then:
+
+# 1. Login
+# ✅ login valido
+curl -i -X POST $BASE/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"email1@email.com","senha":"senha"}'
+
+# ❌ senha errada -> 401
+curl -i -X POST $BASE/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"email1@email.com","senha":"senhaerrada"}'
+
+# ❌ email inexistente -> 401
+curl -i -X POST $BASE/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"naoexiste@teste.com","senha":"1234"}'
+
+# ❌ senha em branco -> 400
+curl -i -X POST $BASE/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"joao@teste.com"}'
+
+# ❌ body vazio -> 400
+curl -i -X POST $BASE/login \
+  -H "Content-Type: application/json" \
+  -d '{}'
+  
+ # 2. Usuarios 
+ 
+ # ✅ listar todos
+curl -i $BASE/usuarios
+
+# ✅ criar usuario valido
+curl -i -X POST $BASE/usuarios \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Joao Silva","email":"joao@teste.com","senha":"1234","role":"USER"}'
+
+# ✅ procurar por id
+curl -i $BASE/usuarios/5
+
+# ❌ procurar id inexistente -> 404
+curl -i $BASE/usuarios/99999
+
+# ❌ criar novo com nome em branco (@NotEmpty) -> 400
+curl -i -X POST $BASE/usuarios \
+  -H "Content-Type: application/json" \
+  -d '{"email":"teste2@teste.com","senha":"1234","role":"USER"}'
+
+# ❌ criar novo com email invalido (@Email) -> 400
+curl -i -X POST $BASE/usuarios \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Teste","email":"nao-e-email","senha":"1234","role":"USER"}'
+
+# ❌ criar com a senha menor que o mínimo (@Size min=4) -> 400
+curl -i -X POST $BASE/usuarios \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Teste","email":"teste3@teste.com","senha":"12","role":"USER"}'
+
+# ❌ criar com role enum invalido -> 400 (Jackson deserialize error)
+curl -i -X POST $BASE/usuarios \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Teste","email":"teste4@teste.com","senha":"1234","role":"NAO_EXISTE"}'
+
+# ❌ criar com email ja existente (unique=true) -> 500 unless you add a mapper for it
+curl -i -X POST $BASE/usuarios \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Joao Duplicado","email":"joao@teste.com","senha":"1234","role":"USER"}'
+
+# ✅ update (replace 1 with a real id)
+curl -i -X PUT $BASE/usuarios/5 \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Joao Silva Atualizado","email":"joao@teste.com","senha":"1234","role":"USER"}'
+
+# ❌ update id inexistente -> 404
+curl -i -X PUT $BASE/usuarios/99999 \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"X","email":"x@teste.com","senha":"1234","role":"USER"}'
+
+# ✅ delete
+curl -i -X DELETE $BASE/usuarios/1
+
+# ❌ delete nonexistent id -> 404
+curl -i -X DELETE $BASE/usuarios/99999
+
+# 3. Pets
+
+# ✅ criar pet com dono id 2 (use a real existing usuario id)
+curl -i -X POST $BASE/pets \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Rex","especie":"CACHORRO","dono":{"id":2}}'
+
+# ✅ listar todos
+curl -i $BASE/pets
+
+# ✅ procurar por id
+curl -i $BASE/pets/1
+
+# ❌ procurar id inexistente -> 404
+curl -i $BASE/pets/99999
+
+# ✅ lisar pets de um dono
+curl -i $BASE/pets/usuario/2
+
+# ❌ listar pets de dono inexistente -> 404
+curl -i $BASE/pets/usuario/99999
+
+# ❌ criar novo com nome em branco (@NotEmpty) -> 400
+curl -i -X POST $BASE/pets \
+  -H "Content-Type: application/json" \
+  -d '{"especie":"CACHORRO","dono":{"id":2}}'
+
+# ❌ criar novo com dono em branco -> 400 (custom check in PetResource)
+curl -i -X POST $BASE/pets \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"SemDono","especie":"GATO"}'
+
+# ❌ criar com dono id inexistente -> 400
+curl -i -X POST $BASE/pets \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Fantasma","especie":"GATO","dono":{"id":99999}}'
+
+# ❌ criar com especie enum invalida -> 400
+curl -i -X POST $BASE/pets \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Bicho","especie":"DRAGAO","dono":{"id":2}}'
+
+# ✅ update (replace 1 with a real pet id)
+curl -i -X PUT $BASE/pets/1 \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Rex Atualizado","especie":"CACHORRO","dono":{"id":2}}'
+
+# ❌ update pet inexistente -> 404
+curl -i -X PUT $BASE/pets/99999 \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"X","especie":"CACHORRO","dono":{"id":2}}'
+
+# ✅ delete (replace 1)
+curl -i -X DELETE $BASE/pets/1
+
+# ❌ delete pet inexistente -> 404
+curl -i -X DELETE $BASE/pets/99999

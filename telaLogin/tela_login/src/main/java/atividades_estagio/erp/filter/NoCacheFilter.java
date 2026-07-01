@@ -1,4 +1,4 @@
-package atividafdes_estagio.erp.filter;
+package atividades_estagio.erp.filter;
 
 import java.io.IOException;
 
