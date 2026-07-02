@@ -10,6 +10,7 @@ import javax.inject.Named;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class UsuarioController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> remover(Long id){
+	public ResponseEntity<Void> remover(@PathVariable Long id){
 		Usuario usuario=getRepo().porId(id);
 	    getRepo().remover(usuario);
 		return ResponseEntity.ok().build();

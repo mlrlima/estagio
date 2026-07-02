@@ -67,4 +67,13 @@ public class Pets implements Serializable {
 		manager.remove(pet);
 	}
 	
+	public void removerPetsUsuario(Usuario usuario) {
+		List<Pet> listaPets=todos();
+		listaPets=filtrarPetsDoUsuario(listaPets, usuario);
+		
+		for (Pet it:listaPets) {
+		    remover(it);
+		}
+	}
+	
 }
