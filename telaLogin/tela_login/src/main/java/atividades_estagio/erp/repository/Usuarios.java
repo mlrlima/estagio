@@ -77,10 +77,11 @@ public class Usuarios implements Serializable {
 
 	//delete
 	public void remover(Usuario usuario) {
+		usuario = porId(usuario.getId());
+		
 		Pets pets=new Pets();
 		pets.removerPetsUsuario(usuario);
 		
-		usuario = porId(usuario.getId());
 		manager.remove(usuario);
 	}
 	
