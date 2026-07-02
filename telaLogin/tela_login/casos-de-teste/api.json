@@ -1,84 +1,564 @@
 {
   "info": {
-    "name": "Usuario API - atividades_estagio.erp",
-    "description": "Testes dos endpoints REST de Usuario (Spring Boot)",
+    "name": "atividades_estagio.erp - Auth + RBAC",
+    "description": "Testa login/token, e regras ADMIN vs USER pra /usuario e /pet.\n\nCOMO USAR:\n1. Rode a pasta '0. Setup' inteira, na ordem, uma vez.\n2. Depois de rodar 'Signup - Usuario Admin', vá no banco e troque a role desse usuário pra ADMIN manualmente (UPDATE usuario SET role='ADMIN' WHERE email='admin@teste.com'). Isso é proposital: a API nunca deixa alguém virar admin sozinho.\n3. Rode 'Login - Admin' e 'Login - User' de novo pra pegar os tokens já com a role certa.\n4. Depois disso pode rodar as pastas 1, 2 e 3 em qualquer ordem.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:8080/tela_login/api"
-    }
+    { "key": "baseUrl", "value": "http://localhost:8080/tela_login/api" },
+    { "key": "tokenAdmin", "value": "" },
+    { "key": "tokenUser", "value": "" },
+    { "key": "tokenUser2", "value": "" },
+    { "key": "idAdmin", "value": "" },
+    { "key": "idUser", "value": "" },
+    { "key": "idUser2", "value": "" },
+    { "key": "petIdUser", "value": "" }
   ],
   "item": [
     {
-      "name": "Criar Usuario (POST)",
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"maria@teste.com\",\n  \"senha\": \"123456\"\n}"
+      "name": "0. Setup",
+      "item": [
+        {
+          "name": "Signup - Usuario Admin (vira ADMIN manualmente no banco depois)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/usuario",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Admin Teste\",\n  \"email\": \"admin@teste.com\",\n  \"senha\": \"admin123\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('signup admin - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
         },
-        "url": {
-          "raw": "{{baseUrl}}/usuario",
-          "host": ["{{baseUrl}}"],
-          "path": ["usuario"]
+        {
+          "name": "Signup - Usuario Comum (User 1 - dono de pets)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/usuario",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Usuario Um\",\n  \"email\": \"user1@teste.com\",\n  \"senha\": \"user123\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('signup user1 - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "Signup - Usuario Comum (User 2 - pra testar 403 cruzado)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/usuario",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Usuario Dois\",\n  \"email\": \"user2@teste.com\",\n  \"senha\": \"user123\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('signup user2 - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "Login - Admin (rode de novo depois de trocar a role no banco)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"maria@email.com\",\n  \"senha\": \"senha123\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('login admin - 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('tokenAdmin', json.token);",
+              "pm.collectionVariables.set('idAdmin', json.id);",
+              "pm.test('role retornada é ADMIN (se ainda for USER, troque no banco e rode de novo)', () => {",
+              "  pm.expect(json.role).to.eql('ADMIN');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "Login - User 1",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user1@teste.com\",\n  \"senha\": \"user123\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('login user1 - 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('tokenUser', json.token);",
+              "pm.collectionVariables.set('idUser', json.id);"
+            ]}
+          }]
+        },
+        {
+          "name": "Login - User 2",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user2@teste.com\",\n  \"senha\": \"user123\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('login user2 - 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('tokenUser2', json.token);",
+              "pm.collectionVariables.set('idUser2', json.id);"
+            ]}
+          }]
         }
-      }
+      ]
     },
     {
-      "name": "Buscar Usuario por Email (GET)",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/usuario?email=maria@teste.com",
-          "host": ["{{baseUrl}}"],
-          "path": ["usuario"],
-          "query": [
-            { "key": "email", "value": "maria@teste.com" }
-          ]
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Login - senha errada -> 401",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user1@teste.com\",\n  \"senha\": \"senhaerrada\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('senha errada - 401', () => pm.response.to.have.status(401));"
+            ]}
+          }]
+        },
+        {
+          "name": "Me - sem token -> 401",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/auth/me"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('sem token - 401', () => pm.response.to.have.status(401));"
+            ]}
+          }]
+        },
+        {
+          "name": "Me - token invalido -> 401",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer token-que-nao-existe" }],
+            "url": "{{baseUrl}}/auth/me"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('token invalido - 401', () => pm.response.to.have.status(401));"
+            ]}
+          }]
+        },
+        {
+          "name": "Me - com token valido -> 200",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/auth/me"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('token valido - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "Logout - User 1",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/auth/logout"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('logout - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "Me - depois do logout -> 401 (rode Login User 1 de novo depois desse teste)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/auth/me"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('token invalidado apos logout - 401', () => pm.response.to.have.status(401));"
+            ]}
+          }]
         }
-      }
+      ]
     },
     {
-      "name": "Atualizar Usuario (PUT)",
-      "request": {
-        "method": "PUT",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Maria Atualizada\",\n  \"email\": \"maria@teste.com\",\n  \"senha\": \"123456\"\n}"
+      "name": "2. Usuario - RBAC",
+      "item": [
+        {
+          "name": "GET proprio usuario (User 1) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/usuario?email=user1@teste.com"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('ve o proprio - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
         },
-        "url": {
-          "raw": "{{baseUrl}}/usuario",
-          "host": ["{{baseUrl}}"],
-          "path": ["usuario"]
+        {
+          "name": "GET usuario de outra pessoa (User 1 -> User 2) -> 403",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/usuario?email=user2@teste.com"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('user comum nao ve outro - 403', () => pm.response.to.have.status(403));"
+            ]}
+          }]
+        },
+        {
+          "name": "GET usuario de outra pessoa (Admin -> User 2) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/usuario?email=user2@teste.com"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('admin ve qualquer um - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /usuario/all (User) -> 403",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/usuario/all"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('user nao lista todos - 403', () => pm.response.to.have.status(403));"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /usuario/all (Admin) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/usuario/all"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('admin lista todos - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "PUT atualizar proprio usuario (User 1) -> 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenUser}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/usuario",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": {{idUser}},\n  \"nome\": \"Usuario Um Editado\",\n  \"email\": \"user1@teste.com\",\n  \"senha\": \"\",\n  \"role\": \"ADMIN\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('atualiza proprio - 200', () => pm.response.to.have.status(200));",
+              "pm.test('nao conseguiu virar ADMIN sozinho', () => {",
+              "  pm.expect(pm.response.json().role).to.eql('USER');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "PUT atualizar outro usuario (User 1 -> User 2) -> 403",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenUser}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/usuario",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": {{idUser2}},\n  \"nome\": \"Hackeado\",\n  \"email\": \"user2@teste.com\",\n  \"senha\": \"\"\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('nao edita outro usuario - 403', () => pm.response.to.have.status(403));"
+            ]}
+          }]
+        },
+        {
+          "name": "DELETE proprio usuario sem token -> 401",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/usuario/{{idUser2}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('sem token - 401', () => pm.response.to.have.status(401));"
+            ]}
+          }]
+        },
+        {
+          "name": "DELETE usuario de outra pessoa (User 1 -> User 2) -> 403",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/usuario/{{idUser2}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('user nao deleta outro - 403', () => pm.response.to.have.status(403));"
+            ]}
+          }]
+        },
+        {
+          "name": "DELETE usuario (Admin -> User 2) -> 200",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/usuario/{{idUser2}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('admin deleta qualquer um - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
         }
-      }
+      ]
     },
     {
-      "name": "Remover Usuario (DELETE)",
-      "request": {
-        "method": "DELETE",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"maria@teste.com\",\n  \"senha\": \"123456\"\n}"
+      "name": "3. Pet - RBAC",
+      "item": [
+        {
+          "name": "POST pet sem token -> 401",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/pet",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Rex\",\n  \"especie\": \"CACHORRO\",\n  \"dono\": { \"id\": {{idUser}} }\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('sem token - 401', () => pm.response.to.have.status(401));"
+            ]}
+          }]
         },
-        "url": {
-          "raw": "{{baseUrl}}/usuario",
-          "host": ["{{baseUrl}}"],
-          "path": ["usuario"]
+        {
+          "name": "POST pet (User 1 cria pra si mesmo) -> 200",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenUser}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/pet",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Rex\",\n  \"especie\": \"CACHORRO\",\n  \"dono\": { \"id\": {{idUser}} }\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('cria pet - 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('petIdUser', json.id);",
+              "pm.test('dono foi forcado pro usuario logado', () => {",
+              "  pm.expect(json.dono.id).to.eql(pm.collectionVariables.get('idUser'));",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /pet (User 1) -> só vê os próprios",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/pet"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('lista pets - 200', () => pm.response.to.have.status(200));",
+              "const json = pm.response.json();",
+              "pm.test('so tem pets do proprio dono', () => {",
+              "  json.forEach(p => pm.expect(p.dono.id).to.eql(pm.collectionVariables.get('idUser')));",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /pet (Admin) -> vê todos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenAdmin}}" }],
+            "url": "{{baseUrl}}/pet"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('admin lista todos os pets - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "GET pet por id (dono) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/pet/{{petIdUser}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('dono ve o proprio pet - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
+        },
+        {
+          "name": "GET pet por id (outro usuario, nao-dono) -> 403",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser2}}" }],
+            "url": "{{baseUrl}}/pet/{{petIdUser}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('quem nao e dono nem admin nao ve - 403 (ou 401 se User 2 ja foi deletado)', () => {",
+              "  pm.expect([401,403]).to.include(pm.response.code);",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "PUT pet - tenta transferir dono (User 1) -> dono é ignorado",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{tokenUser}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/pet",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": {{petIdUser}},\n  \"nome\": \"Rex Editado\",\n  \"especie\": \"CACHORRO\",\n  \"dono\": { \"id\": {{idAdmin}} }\n}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('update - 200', () => pm.response.to.have.status(200));",
+              "pm.test('dono continua sendo o original, nao foi transferido', () => {",
+              "  pm.expect(pm.response.json().dono.id).to.eql(pm.collectionVariables.get('idUser'));",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "DELETE pet (não-dono) -> 403",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser2}}" }],
+            "url": "{{baseUrl}}/pet/{{petIdUser}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('nao-dono nao deleta - 403 (ou 401 se User 2 ja foi deletado)', () => {",
+              "  pm.expect([401,403]).to.include(pm.response.code);",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "DELETE pet (dono) -> 200",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{tokenUser}}" }],
+            "url": "{{baseUrl}}/pet/{{petIdUser}}"
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('dono deleta o proprio pet - 200', () => pm.response.to.have.status(200));"
+            ]}
+          }]
         }
-      }
+      ]
     }
   ]
 }

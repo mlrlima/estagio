@@ -1,7 +1,10 @@
 package atividades_estagio.erp.util;
 
+import java.util.function.Function;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 
@@ -19,6 +22,26 @@ public class JPAUtil {
 	
 	public static EntityManager getEntityManager() {
 		return FACTORY.createEntityManager();
+	}
+	
+	 /* Usar isso pra QUALQUER escrita (merge/remove) chamada a partir dos
+	 * @RestController - esse EntityManager e RESOURCE_LOCAL, entao nao tem
+	 * transacao automatica como tem no lado CDI.
+	 */
+	public static <T> T executarEmTransacao(Function<EntityManager, T> acao) {
+		EntityManager manager = getEntityManager();
+		EntityTransaction tx = manager.getTransaction();
+		try {
+			tx.begin();
+			T resultado = acao.apply(manager);
+			tx.commit();
+			return resultado;
+		} catch (RuntimeException e) {
+			if (tx.isActive()) tx.rollback();
+			throw e;
+		} finally {
+			manager.close();
+		}
 	}
 	
 }
