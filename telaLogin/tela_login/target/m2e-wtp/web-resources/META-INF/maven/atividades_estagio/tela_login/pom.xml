@@ -5,141 +5,134 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>tela_login</name>
-  
+
   <properties>
-  <!-- tipo de encodificacao dos caracteres dos arquivos --> 
-  <!-- "global standard character encoding" -->
-  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- versao do Spring MVC (nao Spring Boot) compativel com javax.* -->
+    <spring.version>5.3.31</spring.version>
   </properties>
-  
+
   <dependencies>
-  
-  	<dependency>
-  	<!-- para o cdi -->
-  		<groupId>org.jboss.weld.servlet</groupId>
-  		<artifactId>weld-servlet-core</artifactId>
-  		<version>3.1.9.Final</version>
-  		<scope>compile</scope>
-  	</dependency>
-  	<dependency>
-    <groupId>org.jboss.weld</groupId>
-	    <artifactId>weld-core-impl</artifactId>
-	    <version>3.1.9.Final</version>
-	</dependency>
-  
-  	<dependency>
-  	<!-- reference implementation of the JSF --> 
-  	<!-- used to build component-based user interfaces -->
-  		<groupId>org.glassfish</groupId>
-  		<artifactId>javax.faces</artifactId>
-  		<version>2.3.9</version>
-  		<scope>compile</scope>
-  	</dependency>
-  	
-  	<dependency>
-  	<!-- UI component framework for JSF -->
-  		<groupId>org.primefaces</groupId>
-  		<artifactId>primefaces</artifactId>
-  		<version>15.0.0</version>
-  		<scope>compile</scope>
-  	</dependency>
-  	
-  	<dependency>
-  		<groupId>javax.servlet</groupId>
-  		<artifactId>javax.servlet-api</artifactId>
-  		<version>3.0.1</version>
-  		<scope>provided</scope>
-  	</dependency>
-  	
-  	<dependency>
-  	<!-- api de validacao -->
-  		<groupId>org.hibernate</groupId>
-  		<artifactId>hibernate-validator</artifactId>
-  		<version>5.3.0.Final</version>
-  		<scope>compile</scope>
-  	</dependency>
-  	
-  	<dependency>
-  	<!--  -->
-  		<groupId>org.hibernate</groupId>
-	    <artifactId>hibernate-core</artifactId>
-	    <version>5.6.15.Final</version>
-  		<scope>compile</scope>
-  	</dependency>
-  	
-  	<dependency>
-  		<groupId>com.mysql</groupId>
-	    <artifactId>mysql-connector-j</artifactId>
-	    <version>9.3.0</version>
-  		<scope>compile</scope>
-  	</dependency>
-  	
-  	<!-- pq essa versao do java nao tem oq o hibernate quer -->
-  	<!-- JAXB API -->
+
+    <!-- ===== CDI / Weld (continua pro lado JSF) ===== -->
     <dependency>
-        <groupId>javax.xml.bind</groupId>
-        <artifactId>jaxb-api</artifactId>
-        <version>2.3.1</version>
-    </dependency>
-    <!-- JAXB Runtime -->
-    <dependency>
-        <groupId>org.glassfish.jaxb</groupId>
-        <artifactId>jaxb-runtime</artifactId>
-        <version>2.3.1</version>
-    </dependency>
-    <!-- Activation Framework -->
-    <dependency>
-        <groupId>com.sun.activation</groupId>
-        <artifactId>javax.activation</artifactId>
-        <version>1.2.0</version>
+      <groupId>org.jboss.weld.servlet</groupId>
+      <artifactId>weld-servlet-core</artifactId>
+      <version>3.1.9.Final</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
-	    <groupId>org.javassist</groupId>
-	    <artifactId>javassist</artifactId>
-	    <version>3.29.2-GA</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.glassfish</groupId>
-	    <artifactId>javax.el</artifactId>
-	    <version>3.0.1-b12</version>
-	</dependency>
-	
-	<!-- ===== REST (JAX-RS via RESTEasy) ===== -->
-	<dependency>
-		<!-- registra a Application e os @Path automaticamente como servlet -->
-		<groupId>org.jboss.resteasy</groupId>
-		<artifactId>resteasy-servlet-initializer</artifactId>
-		<version>3.15.6.Final</version>
-	</dependency>
-	<dependency>
-		<!-- integra os recursos REST com o CDI/Weld que o projeto já usa -->
-		<groupId>org.jboss.resteasy</groupId>
-		<artifactId>resteasy-cdi</artifactId>
-		<version>3.15.6.Final</version>
-	</dependency>
-	<dependency>
-		<!-- conversao automatica Java <-> JSON -->
-		<groupId>org.jboss.resteasy</groupId>
-		<artifactId>resteasy-jackson2-provider</artifactId>
-		<version>3.15.6.Final</version>
-	</dependency>
-  	
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-core-impl</artifactId>
+      <version>3.1.9.Final</version>
+    </dependency>
+
+    <!-- ===== JSF / PrimeFaces ===== -->
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.faces</artifactId>
+      <version>2.3.9</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>15.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- ===== Validacao / Hibernate / MySQL ===== -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>5.3.0.Final</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.6.15.Final</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>9.3.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- JAXB (necessario pro Hibernate nessa versao do Java) -->
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.activation</groupId>
+      <artifactId>javax.activation</artifactId>
+      <version>1.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.javassist</groupId>
+      <artifactId>javassist</artifactId>
+      <version>3.29.2-GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>3.0.1-b12</version>
+    </dependency>
+
+    <!-- ===== Spring MVC puro (NAO e Spring Boot) — so pra API REST ===== -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <!-- conversao Java <-> JSON pros @RestController -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.15.2</version>
+    </dependency>
+
   </dependencies>
-  
+
   <build>
-  	<plugins>
-  		<plugin>
-  			<groupId>org.apache.maven.plugins</groupId>
-  			<artifactId>maven-compiler-plugin</artifactId>
-  			<version>3.13.0</version>
-  			<configuration>
-  			<!-- java 17 -->
-  				<source>17</source>
-  				<target>17</target>
-  			</configuration>
-  		</plugin>
-  	</plugins>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+      </plugin>
+    </plugins>
   </build>
-  
-  
+
 </project>

@@ -1,0 +1,84 @@
+{
+  "info": {
+    "name": "Usuario API - atividades_estagio.erp",
+    "description": "Testes dos endpoints REST de Usuario (Spring Boot)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/tela_login/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "Criar Usuario (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"maria@teste.com\",\n  \"senha\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/usuario",
+          "host": ["{{baseUrl}}"],
+          "path": ["usuario"]
+        }
+      }
+    },
+    {
+      "name": "Buscar Usuario por Email (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/usuario?email=maria@teste.com",
+          "host": ["{{baseUrl}}"],
+          "path": ["usuario"],
+          "query": [
+            { "key": "email", "value": "maria@teste.com" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Atualizar Usuario (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Maria Atualizada\",\n  \"email\": \"maria@teste.com\",\n  \"senha\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/usuario",
+          "host": ["{{baseUrl}}"],
+          "path": ["usuario"]
+        }
+      }
+    },
+    {
+      "name": "Remover Usuario (DELETE)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"maria@teste.com\",\n  \"senha\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/usuario",
+          "host": ["{{baseUrl}}"],
+          "path": ["usuario"]
+        }
+      }
+    }
+  ]
+}

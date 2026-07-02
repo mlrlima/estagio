@@ -17,8 +17,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Entity
 @Table(name="usuario")
 public class Usuario implements Serializable{
@@ -37,9 +35,6 @@ public class Usuario implements Serializable{
 	@NotNull
 	@Size(min=4, message="A senha deve ter no minimo 4 caracteres")
 	@Column(nullable=false, length=50)
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //the field can be accepted
-	//during deserialization (when converting JSON into an object), but it will be omitted
-	//during serialization (when converting an object back into JSON)
 	private String senha;
 	
 	@NotEmpty //not null && min 1 caractere
