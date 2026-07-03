@@ -12,6 +12,7 @@ public class GeradorToken {
 	private static final Map<String, Long> tokens=new ConcurrentHashMap<>();
 	
 	public static String gerar(Usuario usuario) {
+		//UUID == Universally Unique Identifier
 		String token=UUID.randomUUID().toString();
 		
 		tokens.put(token, usuario.getId());

@@ -19,15 +19,16 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 	@Override
 	public void onStartup(ServletContext container) throws ServletException {
+						//representa o servidor (Tomcat)
 
 		// contexto Spring separado, so pros @RestController
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(WebConfig.class);
 
 		ServletRegistration.Dynamic dispatcher =
-				container.addServlet("dispatcher", new DispatcherServlet(context));
+				container.addServlet("dispatcher", new DispatcherServlet(context)); //controlador central
 
-		dispatcher.setLoadOnStartup(1);
+		dispatcher.setLoadOnStartup(1); // 1== alta prioridade paea inicializaçao
 		dispatcher.addMapping("/api/*");
 	}
 }
